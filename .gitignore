@@ -1,0 +1,6 @@
+node_modules
+.idea.md
+.idea
+.history
+.env
+dist
