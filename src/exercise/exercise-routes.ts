@@ -1,24 +1,31 @@
 import express from 'express';
 import * as creators from './exercise-handler';
-import * as exerciseService from '../exercise/exercise-service';
-import { validationMiddleware } from '../utils/validation-middleware';
 import { exerciseCrateValidator, exerciseUpdateValidator } from './exercise-validator';
 import { TExerciseI, TExerciseU } from './exercise-entity';
+import * as exerciseService from './exercise-service';
+import { createExpressCallback } from '../utils/express-callback';
+import { validationMiddleware } from '../utils/validation-middleware';
 
 const router = express.Router();
 
-router.get('/', creators.createGetAllExerciseHandler(exerciseService));
-router.get('/:id', creators.createGetOneExerciseHandler(exerciseService));
+const getAllExerciseHandler = creators.createGetAllExerciseHandler(exerciseService);
+const getOneExerciseHandler = creators.createGetOneExerciseHandler(exerciseService);
+const createExerciseHandler = creators.createCreateNewExerciseHandler(exerciseService);
+const updateExerciseHandler = creators.createUpdateOneExerciseHandler(exerciseService);
+const deleteExerciseHandler = creators.createDeleteOneExerciseHandler(exerciseService);
+
+router.get('/', createExpressCallback(getAllExerciseHandler));
+router.get('/:id', createExpressCallback(getOneExerciseHandler));
 router.post(
   '/',
   validationMiddleware<TExerciseI>(exerciseCrateValidator),
-  creators.createCreateNewExerciseHandler(exerciseService),
+  createExpressCallback(createExerciseHandler),
 );
 router.patch(
   '/:id',
   validationMiddleware<TExerciseU>(exerciseUpdateValidator),
-  creators.createUpdateOneExerciseHandler(exerciseService),
+  createExpressCallback(updateExerciseHandler),
 );
-router.delete('/:id', creators.createDeleteOneExerciseHandler(exerciseService));
+router.delete('/:id', createExpressCallback(deleteExerciseHandler));
 
 export default router;

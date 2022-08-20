@@ -1,5 +1,5 @@
-import Joi from 'joi';
 import { Request, Response, NextFunction } from 'express';
+import Joi from 'joi';
 import AppError from './error/error';
 import { StatusCodes } from './htttp-statuses';
 
