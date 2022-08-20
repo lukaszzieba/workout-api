@@ -3,20 +3,20 @@ import { TExerciseI, TExerciseU } from './exercise-entity';
 
 const TABLE_NAME = 'exercises';
 
-export const getAllExercise = async () => {
+export const getAll = async () => {
   const all = await kenx(TABLE_NAME).select('*');
 
   return all;
 };
 
-export const getOneExercise = async (id: number) => {
-  const one = await kenx(TABLE_NAME).where({ id }).select('*');
+export const getOne = async (id: number) => {
+  const [one] = await kenx(TABLE_NAME).where({ id }).select('*');
 
   return one;
 };
 
-export const createNewExercise = async (exercise: TExerciseI) => {
-  const created = await kenx(TABLE_NAME)
+export const create = async (exercise: TExerciseI) => {
+  const [created] = await kenx(TABLE_NAME)
     .insert({
       ...exercise,
     })
@@ -25,8 +25,8 @@ export const createNewExercise = async (exercise: TExerciseI) => {
   return created;
 };
 
-export const updateOneExercise = async (exercise: TExerciseU) => {
-  const updated = await kenx(TABLE_NAME)
+export const update = async (exercise: TExerciseU) => {
+  const [updated] = await kenx(TABLE_NAME)
     .where({ id: exercise.id })
     .update({
       ...exercise,
@@ -36,8 +36,8 @@ export const updateOneExercise = async (exercise: TExerciseU) => {
   return updated;
 };
 
-export const deleteOneExercise = async (id: number) => {
-  const deleted = await kenx(TABLE_NAME).where({ id }).delete().returning('*');
+export const deleteOne = async (id: number) => {
+  const [deleted] = await kenx(TABLE_NAME).where({ id }).delete().returning('*');
 
   return deleted;
 };
