@@ -1,8 +1,8 @@
 import type { Knex } from 'knex';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
-const { DB_HOST, DB_PORT, DB_NAME } = process.env;
-const DB_CLIENT = 'pg';
-const DEFAULT_DB_PORT = 5432;
+const { DB_CLIENT, DB_HOST, DB_PORT, DB_NAME } = process.env;
 
 const migrations = {
   tableName: 'migrations',
@@ -10,12 +10,10 @@ const migrations = {
   directory: './migrations',
 };
 
-const getDbPort = () => Number(DB_PORT) || DEFAULT_DB_PORT;
-
 const config: Knex.Config = {
   client: DB_CLIENT,
   connection: {
-    port: getDbPort(),
+    port: Number(DB_PORT),
     host: DB_HOST,
     database: DB_NAME,
   },

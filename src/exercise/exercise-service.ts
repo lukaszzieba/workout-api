@@ -1,7 +1,7 @@
 import kenx from '../db';
 import { TExerciseI, TExerciseU } from './exercise-entity';
 
-const TABLE_NAME = 'exercises';
+const TABLE_NAME = 'exercise';
 
 export const getAll = async () => {
   const all = await kenx(TABLE_NAME).select('*');
