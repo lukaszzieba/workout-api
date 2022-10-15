@@ -1,21 +1,18 @@
-import kenx from '../db';
+import db from '../db';
 import { TTrainingI, TTrainingU } from './training-entity';
 
 const TABLE_NAME = 'training';
 
 export const getAll = async () => {
-  const all = await kenx(TABLE_NAME).select('*');
+  const all = await db(TABLE_NAME).select('*');
 
   return all;
 };
 
 export const getOne = async (id: number) => {
-  const [one] = await kenx(TABLE_NAME).where({ id }).select('*');
-  // const { rows: exercises } =
-  //     await kenx.raw(`select e."name" , e.short_description, e.description, te."sets" , te.reps , te.tempo  from training t
-  // join training_exercise te on te.training_id = t.id
-  // join exercise e on e.id  = te.exercise_id;`);
-  const exercise = await kenx(TABLE_NAME)
+  const [one] = await db(TABLE_NAME).where({ id }).select('*');
+
+  const exercise = await db(TABLE_NAME)
     .join('training_exercise', 'training.id', '=', 'training_exercise.training_id')
     .join('exercise', 'exercise.id', '=', 'training_exercise.exercise_id')
     .select(
@@ -27,13 +24,11 @@ export const getOne = async (id: number) => {
       'training_exercise.tempo',
     );
 
-  console.log(exercise)
-
-  return {...one, exercise};
+  return { ...one, exercise };
 };
 
 export const create = async (training: TTrainingI) => {
-  const [created] = await kenx(TABLE_NAME)
+  const [created] = await db(TABLE_NAME)
     .insert({
       ...training,
     })
@@ -42,8 +37,10 @@ export const create = async (training: TTrainingI) => {
   return created;
 };
 
+// TODO
+// Update dont work
 export const update = async (training: TTrainingU) => {
-  const [updated] = await kenx(TABLE_NAME)
+  const [updated] = await db(TABLE_NAME)
     .where({ id: training.id })
     .update({
       ...training,
@@ -54,7 +51,7 @@ export const update = async (training: TTrainingU) => {
 };
 
 export const deleteOne = async (id: number) => {
-  const [deleted] = await kenx(TABLE_NAME).where({ id }).delete().returning('*');
+  const [deleted] = await db(TABLE_NAME).where({ id }).delete().returning('*');
 
   return deleted;
 };

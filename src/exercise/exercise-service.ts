@@ -1,22 +1,22 @@
-import kenx from '../db';
+import db from '../db';
 import { TExerciseI, TExerciseU } from './exercise-entity';
 
 const TABLE_NAME = 'exercise';
 
 export const getAll = async () => {
-  const all = await kenx(TABLE_NAME).select('*');
+  const all = await db(TABLE_NAME).select('*');
 
   return all;
 };
 
 export const getOne = async (id: number) => {
-  const [one] = await kenx(TABLE_NAME).where({ id }).select('*');
+  const [one] = await db(TABLE_NAME).where({ id }).select('*');
 
   return one;
 };
 
 export const create = async (exercise: TExerciseI) => {
-  const [created] = await kenx(TABLE_NAME)
+  const [created] = await db(TABLE_NAME)
     .insert({
       ...exercise,
     })
@@ -28,7 +28,7 @@ export const create = async (exercise: TExerciseI) => {
 // TODO
 // Update dont work
 export const update = async (exercise: TExerciseU) => {
-  const [updated] = await kenx(TABLE_NAME)
+  const [updated] = await db(TABLE_NAME)
     .where({ id: exercise.id })
     .update({
       ...exercise,
@@ -39,7 +39,7 @@ export const update = async (exercise: TExerciseU) => {
 };
 
 export const deleteOne = async (id: number) => {
-  const [deleted] = await kenx(TABLE_NAME).where({ id }).delete().returning('*');
+  const [deleted] = await db(TABLE_NAME).where({ id }).delete().returning('*');
 
   return deleted;
 };
