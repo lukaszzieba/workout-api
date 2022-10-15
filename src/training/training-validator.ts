@@ -1,17 +1,17 @@
 import Joi from 'Joi';
-import { TExerciseI, TExerciseU } from './exercise-entity';
+import { TTrainingI, TTrainingU } from './training-entity';
 
-export const exerciseCrateValidator = Joi.object<TExerciseI>({
+export const trainingCrateValidator = Joi.object<TTrainingI>({
   name: Joi.string().required(),
-  shortDescription: Joi.string().alphanum().required(),
+  shortDescription: Joi.string().required(),
   description: Joi.string().required(),
   createdAt: Joi.date().optional(),
   updatedAt: Joi.date().optional(),
 });
 
-export const exerciseUpdateValidator = Joi.object<TExerciseU>({
+export const trainingUpdateValidator = Joi.object<TTrainingU>({
   name: Joi.string().optional(),
-  shortDescription: Joi.string().alphanum().optional(),
+  shortDescription: Joi.string().optional(),
   description: Joi.string().optional(),
   createdAt: Joi.date().optional(),
   updatedAt: Joi.date().optional(),

@@ -1,10 +1,11 @@
 import { BaseEntity } from '../types/base-entity';
 
-export interface Exercise extends BaseEntity {
+export type Exercise = BaseEntity & {
   name: string;
   shortDescription?: string;
-  description: string;
-}
+  description?: string;
+  reserve?: number;
+};
 
 export type TExerciseI = Pick<Exercise, 'name' | 'shortDescription' | 'description'> &
   Partial<Pick<Exercise, 'createdAt' | 'updatedAt'>>;

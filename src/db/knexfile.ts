@@ -1,13 +1,18 @@
-import type { Knex } from 'knex';
 import * as dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({ path: '../../.env' });
+
+import type { Knex } from 'knex';
 
 const { DB_CLIENT, DB_HOST, DB_PORT, DB_NAME } = process.env;
 
-const migrations = {
+const migrations: Knex.MigratorConfig = {
   tableName: 'migrations',
   extension: 'ts',
   directory: './migrations',
+};
+
+const seed: Knex.SeederConfig = {
+  directory: './seeds/dev',
 };
 
 const config: Knex.Config = {
@@ -18,6 +23,7 @@ const config: Knex.Config = {
     database: DB_NAME,
   },
   ...migrations,
+  ...seed,
 };
 
 module.exports = config;

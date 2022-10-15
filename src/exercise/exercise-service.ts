@@ -25,6 +25,8 @@ export const create = async (exercise: TExerciseI) => {
   return created;
 };
 
+// TODO
+// Update dont work
 export const update = async (exercise: TExerciseU) => {
   const [updated] = await kenx(TABLE_NAME)
     .where({ id: exercise.id })

@@ -5,6 +5,8 @@ import express, { NextFunction, Request, Response } from 'express';
 import bodyParser from 'body-parser';
 
 import exerciseRouter from './exercise/exercise-routes';
+import trainingRouter from './training/training-routes';
+
 import AppError from './utils/error/error';
 import { handleError } from './utils/error/error-handler';
 import { StatusCodes } from './utils/htttp-statuses';
@@ -13,7 +15,9 @@ const PORT = 3000;
 
 const app = express();
 const router = express.Router();
+
 router.use('/exercises', exerciseRouter);
+router.use('/training', trainingRouter);
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
