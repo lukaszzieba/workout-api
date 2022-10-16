@@ -37,11 +37,9 @@ export const create = async (training: TTrainingI) => {
   return created;
 };
 
-// TODO
-// Update dont work
-export const update = async (training: TTrainingU) => {
+export const update = async (id: number, training: TTrainingU) => {
   const [updated] = await db(TABLE_NAME)
-    .where({ id: training.id })
+    .where({ id })
     .update({
       ...training,
     })

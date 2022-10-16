@@ -11,10 +11,11 @@ export const createExpressCallback =
 
       const data = await handler(myReq);
       res.json(data);
-    } catch (error) {
-      // TODO
-      // HANDLE DIFERENT ERRORS
-      console.log(error);
+    } catch (error: unknown) {
+      if (error instanceof AppError) {
+        return next(error);
+      }
+
       next(new AppError(StatusCodes.INTERNAL_SERVER_ERROR, 'INTERNAL_SERVER_ERROR'));
     }
   };
