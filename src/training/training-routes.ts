@@ -2,17 +2,17 @@ import express from 'express';
 import * as creators from './training-handler';
 import { trainingCrateValidator, trainingUpdateValidator } from './training-validator';
 import { TTrainingI, TTrainingU } from './training-entity';
-import * as trainingService from './training-service';
+import { service } from './training-service';
 import { createExpressCallback } from '../utils/express-callback';
 import { validationMiddleware } from '../utils/validation-middleware';
 
 const router = express.Router();
 
-const getAllTrainingHandler = creators.createGetAllTrainingHandler(trainingService);
-const getOneTrainingHandler = creators.createGetOneTrainingHandler(trainingService);
-const createTrainingHandler = creators.createCreateNewTrainingHandler(trainingService);
-const updateTrainingHandler = creators.createUpdateOneTrainingHandler(trainingService);
-const deleteTrainingHandler = creators.createDeleteOneTrainingHandler(trainingService);
+const getAllTrainingHandler = creators.createGetAllTrainingHandler(service);
+const getOneTrainingHandler = creators.createGetOneTrainingHandler(service);
+const createTrainingHandler = creators.createCreateNewTrainingHandler(service);
+const updateTrainingHandler = creators.createUpdateOneTrainingHandler(service);
+const deleteTrainingHandler = creators.createDeleteOneTrainingHandler(service);
 
 router.get('/', createExpressCallback(getAllTrainingHandler));
 router.get('/:id', createExpressCallback(getOneTrainingHandler));

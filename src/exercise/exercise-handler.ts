@@ -11,7 +11,6 @@ export const createGetAllExerciseHandler = (exerciseService: Service<Exercise>) 
 export const createGetOneExerciseHandler =
   (exerciseService: Service<Exercise>) => async (req: MyRequest) => {
     const id = getParamId(req);
-
     const exercise = await exerciseService.getOne(id);
 
     if (exercise) return exercise;

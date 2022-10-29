@@ -3,21 +3,36 @@ dotenv.config();
 
 import express, { NextFunction, Request, Response } from 'express';
 import bodyParser from 'body-parser';
+import compression from 'compression';
 
 import exerciseRouter from './exercise/exercise-routes';
 import trainingRouter from './training/training-routes';
+import userRouter from './user/user-routes';
 
 import AppError from './utils/error/error';
 import { handleError } from './utils/error/error-handler';
 import { StatusCodes } from './utils/htttp-statuses';
+import { isProd } from './utils/constans';
+
+import cors from './server/cors';
+import session from './server/session';
 
 const PORT = 3000;
 
 const app = express();
 const router = express.Router();
 
+app.set('trust proxy', !isProd);
+app.set('trust proxy', 1);
+app.use(cors);
+
+app.use(compression());
+
+app.use(session);
+
 router.use('/exercises', exerciseRouter);
 router.use('/training', trainingRouter);
+router.use('/user', userRouter);
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());

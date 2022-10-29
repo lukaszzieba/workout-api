@@ -3,13 +3,13 @@ import { TTrainingI, TTrainingU } from './training-entity';
 
 const TABLE_NAME = 'training';
 
-export const getAll = async () => {
+const getAll = async () => {
   const all = await db(TABLE_NAME).select('*');
 
   return all;
 };
 
-export const getOne = async (id: number) => {
+const getOne = async (id: number) => {
   const [one] = await db(TABLE_NAME).where({ id }).select('*');
 
   const exercise = await db(TABLE_NAME)
@@ -24,10 +24,12 @@ export const getOne = async (id: number) => {
       'training_exercise.tempo',
     );
 
+  console.log(one);
+
   return { ...one, exercise };
 };
 
-export const create = async (training: TTrainingI) => {
+const create = async (training: TTrainingI) => {
   const [created] = await db(TABLE_NAME)
     .insert({
       ...training,
@@ -37,7 +39,7 @@ export const create = async (training: TTrainingI) => {
   return created;
 };
 
-export const update = async (id: number, training: TTrainingU) => {
+const update = async (id: number, training: TTrainingU) => {
   const [updated] = await db(TABLE_NAME)
     .where({ id })
     .update({
@@ -48,8 +50,12 @@ export const update = async (id: number, training: TTrainingU) => {
   return updated;
 };
 
-export const deleteOne = async (id: number) => {
+const deleteOne = async (id: number) => {
+  // TODO
+  // should cascade to association table
   const [deleted] = await db(TABLE_NAME).where({ id }).delete().returning('*');
 
   return deleted;
 };
+
+export const service = { getAll, getOne, create, update, deleteOne };

@@ -2,17 +2,17 @@ import express from 'express';
 import * as creators from './exercise-handler';
 import { exerciseCrateValidator, exerciseUpdateValidator } from './exercise-validator';
 import { TExerciseI, TExerciseU } from './exercise-entity';
-import * as exerciseService from './exercise-service';
+import { service } from './exercise-service';
 import { createExpressCallback } from '../utils/express-callback';
 import { validationMiddleware } from '../utils/validation-middleware';
 
 const router = express.Router();
 
-const getAllExerciseHandler = creators.createGetAllExerciseHandler(exerciseService);
-const getOneExerciseHandler = creators.createGetOneExerciseHandler(exerciseService);
-const createExerciseHandler = creators.createCreateNewExerciseHandler(exerciseService);
-const updateExerciseHandler = creators.createUpdateOneExerciseHandler(exerciseService);
-const deleteExerciseHandler = creators.createDeleteOneExerciseHandler(exerciseService);
+const getAllExerciseHandler = creators.createGetAllExerciseHandler(service);
+const getOneExerciseHandler = creators.createGetOneExerciseHandler(service);
+const createExerciseHandler = creators.createCreateNewExerciseHandler(service);
+const updateExerciseHandler = creators.createUpdateOneExerciseHandler(service);
+const deleteExerciseHandler = creators.createDeleteOneExerciseHandler(service);
 
 router.get('/', createExpressCallback(getAllExerciseHandler));
 router.get('/:id', createExpressCallback(getOneExerciseHandler));

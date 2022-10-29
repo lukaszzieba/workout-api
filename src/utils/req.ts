@@ -1,12 +1,16 @@
 import { MyRequest } from '../types/my-request';
 import AppError from './error/error';
 import { StatusCodes } from './htttp-statuses';
-import { isReqParamsHasId } from './type-guards';
 
+// TODO
+// Remove that. Move validation logic tp middleware
 export const getParamId = (req: MyRequest): number => {
-  if (!isReqParamsHasId(req)) throw new AppError(StatusCodes.BAD_REQUEST, 'Id is missing');
+  if (!req?.params || !req.params?.id) {
+    throw new AppError(StatusCodes.BAD_REQUEST, 'Id is missing');
+  }
 
   const id = Number(req.params.id);
+
   if (isNaN(id))
     throw new AppError(
       StatusCodes.BAD_REQUEST,
