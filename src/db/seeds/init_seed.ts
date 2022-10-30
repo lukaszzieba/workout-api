@@ -10,6 +10,9 @@ export async function seed(knex: Knex): Promise<void> {
   await knex('training').del();
   await knex.raw('ALTER SEQUENCE training_id_seq RESTART WITH 1');
 
+  await knex('user').del();
+  await knex.raw('ALTER SEQUENCE user_id_seq RESTART WITH 1');
+
   // Inserts seed entries
   await knex('exercise').insert<any>([
     {
@@ -70,6 +73,16 @@ export async function seed(knex: Knex): Promise<void> {
       exercise_id: 3,
       sets: 5,
       reps: 5,
+    },
+  ]);
+
+  await knex('user').insert<any>([
+    {
+      name: 'Łuaksz',
+      lastname: 'Zięba',
+      email: 'asd@asd.com',
+      password:
+        '$argon2id$v=19$m=65536,t=3,p=4$hrcfns+91+z0Q8LJuEnJBg$wh/hbatQS3O0+gu+TSd5PbRV9Tq0DbKobPsUPaFvw2I',
     },
   ]);
 }
