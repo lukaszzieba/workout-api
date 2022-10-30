@@ -6,11 +6,15 @@ import { StatusCodes } from './htttp-statuses';
 export const validationMiddleware =
   <T>(schema: Joi.ObjectSchema<T>) =>
   (req: Request, res: Response, next: NextFunction) => {
-    const { error, value } = schema.validate(req.body);
+    const { error, value } = schema.validate(req.body, { abortEarly: false });
 
     if (error) {
-      const errorMessage = error.details.map((details) => details.message).join(', ');
-      return next(new AppError(StatusCodes.BAD_REQUEST, errorMessage));
+      // TODO
+      // for easier front end implementation  i should return error.details od something similar
+      // console.log(error.details)
+      const errorMessage = error.details;
+      console.log(errorMessage);
+      return next(new AppError(StatusCodes.BAD_REQUEST, errorMessage.toString()));
     }
 
     return next();

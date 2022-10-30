@@ -9,7 +9,7 @@ export const createExpressCallback =
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const myReq = { ...req };
-
+      console.log('User id from session:', req.session.userId);
       const data = await handler(myReq);
       res.json(data);
     } catch (error: unknown) {

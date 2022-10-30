@@ -9,6 +9,15 @@ import { LoginBody } from '../types/login-body';
 
 type UserService = Service<User, TUserI, TUserU>;
 
+const userMapper = ({ id, name, lastname, email, createdAt, updatedAt }: User) => ({
+  id,
+  name,
+  lastname,
+  email,
+  createdAt,
+  updatedAt,
+});
+
 export const createGetAllUserHandler = (userService: UserService) => async () =>
   await userService.getAll();
 
@@ -39,7 +48,7 @@ export const createCreateUserHandler =
     const user = await userService.create({ ...body, password: hashedPassword });
     req.session.userId = user.id;
 
-    return user;
+    return userMapper(user);
   };
 
 export const createLoginHandler =
@@ -62,5 +71,5 @@ export const createLoginHandler =
       req.session.userId = user.id;
     }
 
-    return { ...user, password: null };
+    return userMapper(user);
   };

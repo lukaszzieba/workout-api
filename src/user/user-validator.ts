@@ -6,8 +6,6 @@ export const userCrateValidator = Joi.object<TUserI>({
   lastname: Joi.string().required(),
   email: Joi.string().required(),
   password: Joi.string().required(),
-  createdAt: Joi.date().optional(),
-  updatedAt: Joi.date().optional(),
 });
 
 export const userUpdateValidator = Joi.object<TUserU>({

@@ -27,7 +27,6 @@ app.set('trust proxy', 1);
 app.use(cors);
 
 app.use(compression());
-
 app.use(session);
 
 router.use('/exercises', exerciseRouter);

@@ -3,7 +3,7 @@ import cors from 'cors';
 import AppError from '../utils/error/error';
 import { StatusCodes } from '../utils/htttp-statuses';
 
-const corsWhitelist = [process.env.CORS_ORIGIN, 'http://localhost'];
+const corsWhitelist = [process.env.CORS_ORIGIN, 'http://localhost:4000'];
 
 export default cors({
   origin: (origin, callback) => {
