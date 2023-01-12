@@ -1,9 +1,9 @@
 import { Session, SessionData } from 'express-session';
 
-export interface MyRequest<TBody = any> {
+export interface MyRequest<TBody = any, TParams = any> {
   body: TBody;
-  params?: { id?: string };
-  query?: any;
+  params: TParams;
+  query: any;
   session: Session & Partial<SessionData>;
 }
 

@@ -1,7 +1,7 @@
 import { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
-  return knex.schema.createTable('user', (tableBuilder) => {
+  return knex.schema.createTable('users', (tableBuilder) => {
     tableBuilder.increments('id').primary();
     tableBuilder.date('created_at').defaultTo(knex.fn.now()).notNullable();
     tableBuilder.date('updated_at').defaultTo(knex.fn.now()).notNullable();

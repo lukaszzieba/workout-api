@@ -1,11 +1,11 @@
 import { MyRequest } from '../types/my-request';
 import { Service } from '../types/service-interface';
 import { User, TUserI, TUserU } from './user-entity';
-import { getParamId } from '../utils/req';
 import { HashUtil } from '../types/hash-util';
 import AppError from '../utils/error/error';
 import { StatusCodes } from '../utils/htttp-statuses';
 import { LoginBody } from '../types/login-body';
+import { TExerciseU } from '../exercise/exercise-entity';
 
 type UserService = Service<User, TUserI, TUserU>;
 
@@ -18,29 +18,28 @@ const userMapper = ({ id, name, lastname, email, createdAt, updatedAt }: User) =
   updatedAt,
 });
 
-export const createGetAllUserHandler = (userService: UserService) => async () =>
+export const getAllUserHandler = (userService: UserService) => async () =>
   await userService.getAll();
 
-export const createGetOneUserHandler = (userService: UserService) => async (req: MyRequest) => {
-  const id = getParamId(req);
+export const getOneUserHandler =
+  (userService: UserService) =>
+  async ({ params: { id } }: MyRequest<never, { id: number }>) => {
+    return await userService.getOne(+id);
+  };
 
-  return await userService.getOne(+id);
-};
+export const updateOneUserHandler =
+  (userService: UserService) =>
+  async ({ params: { id }, body }: MyRequest<TExerciseU, { id: number }>) => {
+    return await userService.update(id, body);
+  };
 
-export const createUpdateOneUserHandler = (userService: UserService) => async (req: MyRequest) => {
-  const id = getParamId(req);
-  const { body } = req;
+export const deleteOneUserHandler =
+  (userService: UserService) =>
+  async ({ params: { id } }: MyRequest<never, { id: number }>) => {
+    return await userService.deleteOne(id);
+  };
 
-  return await userService.update(id, body);
-};
-
-export const createDeleteOneUserHandler = (userService: UserService) => async (req: MyRequest) => {
-  const id = getParamId(req);
-
-  return await userService.deleteOne(id);
-};
-
-export const createCreateUserHandler =
+export const createUserHandler =
   (userService: UserService, hashUtil: HashUtil) => async (req: MyRequest) => {
     const { body } = req;
     const { password } = body;
@@ -51,7 +50,7 @@ export const createCreateUserHandler =
     return userMapper(user);
   };
 
-export const createLoginHandler =
+export const loginHandler =
   (userService: UserService, hashUtil: HashUtil) => async (req: MyRequest<LoginBody>) => {
     const { email, password } = req.body;
 

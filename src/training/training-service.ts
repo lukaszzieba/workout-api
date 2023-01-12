@@ -24,8 +24,6 @@ const getOne = async (id: number) => {
       'training_exercise.tempo',
     );
 
-  console.log(one);
-
   return { ...one, exercise };
 };
 

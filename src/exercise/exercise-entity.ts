@@ -5,6 +5,7 @@ export type Exercise = BaseEntity & {
   shortDescription?: string;
   description?: string;
   reserve?: number;
+  creator?: { id: number; name: string };
 };
 
 export type TExerciseI = Pick<Exercise, 'name' | 'shortDescription' | 'description'> &

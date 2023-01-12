@@ -2,35 +2,32 @@ import express from 'express';
 import argon2 from 'argon2';
 
 import { createExpressCallback } from '../utils/express-callback';
-import { validationMiddleware } from '../utils/validation-middleware';
+import { bodyValidation, paramsValidation } from '../utils/validators/validation-middleware';
 
 import * as creators from './user-hadler';
-import { TUserI, TUserU } from './user-entity';
 import { service } from './user-service';
 import { userCrateValidator, userUpdateValidator } from './user-validator';
+import { idParamValidator } from '../utils/validators/param-id-validator';
 
 const router = express.Router();
 
-const getAllUserHandler = creators.createGetAllUserHandler(service);
-const getOneUserHandler = creators.createGetOneUserHandler(service);
-const createUserHandler = creators.createCreateUserHandler(service, argon2);
-const updateUserHandler = creators.createUpdateOneUserHandler(service);
-const deleteUserHandler = creators.createDeleteOneUserHandler(service);
-const loginUserHandler = creators.createLoginHandler(service, argon2);
+const getAllUserHandler = creators.getAllUserHandler(service);
+const getOneUserHandler = creators.getOneUserHandler(service);
+const createUserHandler = creators.createUserHandler(service, argon2);
+const updateUserHandler = creators.updateOneUserHandler(service);
+const deleteUserHandler = creators.deleteOneUserHandler(service);
+const loginUserHandler = creators.loginHandler(service, argon2);
 
 router.get('/', createExpressCallback(getAllUserHandler));
-router.get('/:id', createExpressCallback(getOneUserHandler));
-router.post(
-  '/',
-  validationMiddleware<TUserI>(userCrateValidator),
-  createExpressCallback(createUserHandler),
-);
+router.get('/:id', paramsValidation(idParamValidator), createExpressCallback(getOneUserHandler));
+router.post('/', bodyValidation(userCrateValidator), createExpressCallback(createUserHandler));
 router.patch(
   '/:id',
-  validationMiddleware<TUserU>(userUpdateValidator),
+  paramsValidation(idParamValidator),
+  bodyValidation(userUpdateValidator),
   createExpressCallback(updateUserHandler),
 );
-router.delete('/:id', createExpressCallback(deleteUserHandler));
+router.delete('/:id', paramsValidation(idParamValidator), createExpressCallback(deleteUserHandler));
 router.post('/login', createExpressCallback(loginUserHandler));
 
 export default router;

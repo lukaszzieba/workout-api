@@ -15,4 +15,4 @@ export const exerciseUpdateValidator = Joi.object<TExerciseU>({
   description: Joi.string().optional(),
   createdAt: Joi.date().optional(),
   updatedAt: Joi.date().optional(),
-});
+})

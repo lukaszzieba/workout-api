@@ -2,14 +2,12 @@ import { NextFunction, Request, Response } from 'express';
 import { DatabaseError } from 'pg';
 import AppError from './error/error';
 import { StatusCodes } from './htttp-statuses';
-import { MyRequest } from '../types/my-request';
 
 export const createExpressCallback =
-  (handler: (myRequest: MyRequest) => Promise<any>) =>
+  (handler: (req: any) => Promise<any>) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const myReq = { ...req };
-      console.log('User id from session:', req.session.userId);
       const data = await handler(myReq);
       res.json(data);
     } catch (error: unknown) {

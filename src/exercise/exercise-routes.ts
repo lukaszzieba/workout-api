@@ -1,31 +1,40 @@
 import express from 'express';
 import * as creators from './exercise-handler';
 import { exerciseCrateValidator, exerciseUpdateValidator } from './exercise-validator';
-import { TExerciseI, TExerciseU } from './exercise-entity';
 import { service } from './exercise-service';
 import { createExpressCallback } from '../utils/express-callback';
-import { validationMiddleware } from '../utils/validation-middleware';
+import { bodyValidation, paramsValidation } from '../utils/validators/validation-middleware';
+import { idParamValidator } from '../utils/validators/param-id-validator';
 
 const router = express.Router();
 
-const getAllExerciseHandler = creators.createGetAllExerciseHandler(service);
-const getOneExerciseHandler = creators.createGetOneExerciseHandler(service);
-const createExerciseHandler = creators.createCreateNewExerciseHandler(service);
-const updateExerciseHandler = creators.createUpdateOneExerciseHandler(service);
-const deleteExerciseHandler = creators.createDeleteOneExerciseHandler(service);
+const getAllExerciseHandler = creators.getAllExerciseHandler(service);
+const getOneExerciseHandler = creators.getOneExerciseHandler(service);
+const createExerciseHandler = creators.createNewExerciseHandler(service);
+const updateExerciseHandler = creators.updateOneExerciseHandler(service);
+const deleteExerciseHandler = creators.deleteOneExerciseHandler(service);
 
 router.get('/', createExpressCallback(getAllExerciseHandler));
-router.get('/:id', createExpressCallback(getOneExerciseHandler));
+router.get(
+  '/:id',
+  paramsValidation(idParamValidator),
+  createExpressCallback(getOneExerciseHandler),
+);
 router.post(
   '/',
-  validationMiddleware<TExerciseI>(exerciseCrateValidator),
+  bodyValidation(exerciseCrateValidator),
   createExpressCallback(createExerciseHandler),
 );
 router.patch(
   '/:id',
-  validationMiddleware<TExerciseU>(exerciseUpdateValidator),
+  paramsValidation(idParamValidator),
+  bodyValidation(exerciseUpdateValidator),
   createExpressCallback(updateExerciseHandler),
 );
-router.delete('/:id', createExpressCallback(deleteExerciseHandler));
+router.delete(
+  '/:id',
+  paramsValidation(idParamValidator),
+  createExpressCallback(deleteExerciseHandler),
+);
 
 export default router;

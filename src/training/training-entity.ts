@@ -5,6 +5,7 @@ export interface Training extends BaseEntity {
   name: string;
   shortDescription?: string;
   description: string;
+  creator?: { id: number; name: string };
   exercises: Exercise & { sets: number; reps: number; tempo?: string }[];
 }
 

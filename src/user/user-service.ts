@@ -1,7 +1,7 @@
 import db from '../db';
 import { TUserI, TUserU } from './user-entity';
 
-const TABLE_NAME = 'user';
+const TABLE_NAME = 'users';
 
 const getAll = async () => {
   const all = await db(TABLE_NAME).select('*');

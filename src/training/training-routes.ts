@@ -1,31 +1,40 @@
 import express from 'express';
 import * as creators from './training-handler';
 import { trainingCrateValidator, trainingUpdateValidator } from './training-validator';
-import { TTrainingI, TTrainingU } from './training-entity';
 import { service } from './training-service';
 import { createExpressCallback } from '../utils/express-callback';
-import { validationMiddleware } from '../utils/validation-middleware';
+import { bodyValidation, paramsValidation } from '../utils/validators/validation-middleware';
+import { idParamValidator } from '../utils/validators/param-id-validator';
 
 const router = express.Router();
 
-const getAllTrainingHandler = creators.createGetAllTrainingHandler(service);
-const getOneTrainingHandler = creators.createGetOneTrainingHandler(service);
-const createTrainingHandler = creators.createCreateNewTrainingHandler(service);
-const updateTrainingHandler = creators.createUpdateOneTrainingHandler(service);
-const deleteTrainingHandler = creators.createDeleteOneTrainingHandler(service);
+const getAllTrainingHandler = creators.getAllTrainingHandler(service);
+const getOneTrainingHandler = creators.getOneTrainingHandler(service);
+const createTrainingHandler = creators.createNewTrainingHandler(service);
+const updateTrainingHandler = creators.updateOneTrainingHandler(service);
+const deleteTrainingHandler = creators.deleteOneTrainingHandler(service);
 
 router.get('/', createExpressCallback(getAllTrainingHandler));
-router.get('/:id', createExpressCallback(getOneTrainingHandler));
+router.get(
+  '/:id',
+  paramsValidation(idParamValidator),
+  createExpressCallback(getOneTrainingHandler),
+);
 router.post(
   '/',
-  validationMiddleware<TTrainingI>(trainingCrateValidator),
+  bodyValidation(trainingCrateValidator),
   createExpressCallback(createTrainingHandler),
 );
 router.patch(
   '/:id',
-  validationMiddleware<TTrainingU>(trainingUpdateValidator),
+  paramsValidation(idParamValidator),
+  bodyValidation(trainingUpdateValidator),
   createExpressCallback(updateTrainingHandler),
 );
-router.delete('/:id', createExpressCallback(deleteTrainingHandler));
+router.delete(
+  '/:id',
+  paramsValidation(idParamValidator),
+  createExpressCallback(deleteTrainingHandler),
+);
 
 export default router;

@@ -1,36 +1,33 @@
 import { MyRequest } from '../types/my-request';
 import { Service } from '../types/service-interface';
-import { Training } from './training-entity';
-import { getParamId } from '../utils/req';
+import { Training, TTrainingI, TTrainingU } from '../training/training-entity';
+import { TExerciseU } from '../exercise/exercise-entity';
 
-export const createGetAllTrainingHandler = (exerciseService: Service<Training>) => async () =>
+type TrainingService = Service<Training, TTrainingI, TTrainingU>;
+
+export const getAllTrainingHandler = (exerciseService: TrainingService) => async () =>
   await exerciseService.getAll();
 
-export const createGetOneTrainingHandler =
-  (exerciseService: Service<Training>) => async (req: MyRequest) => {
-    const id = getParamId(req);
-
-    return await exerciseService.getOne(+id);
+export const getOneTrainingHandler =
+  (exerciseService: TrainingService) =>
+  async ({ params: { id } }: MyRequest<never, { id: number }>) => {
+    return await exerciseService.getOne(id);
   };
 
-export const createCreateNewTrainingHandler =
-  (exerciseService: Service<Training>) => async (req: MyRequest) => {
-    const { body } = req;
-
+export const createNewTrainingHandler =
+  (exerciseService: TrainingService) =>
+  async ({ body }: MyRequest) => {
     return await exerciseService.create(body);
   };
 
-export const createUpdateOneTrainingHandler =
-  (exerciseService: Service<Training>) => async (req: MyRequest) => {
-    const id = getParamId(req);
-    const { body } = req;
-
+export const updateOneTrainingHandler =
+  (exerciseService: TrainingService) =>
+  async ({ params: { id }, body }: MyRequest<TExerciseU, { id: number }>) => {
     return await exerciseService.update(id, body);
   };
 
-export const createDeleteOneTrainingHandler =
-  (exerciseService: Service<Training>) => async (req: MyRequest) => {
-    const id = getParamId(req);
-
+export const deleteOneTrainingHandler =
+  (exerciseService: TrainingService) =>
+  async ({ params: { id } }: MyRequest) => {
     return await exerciseService.deleteOne(id);
   };
