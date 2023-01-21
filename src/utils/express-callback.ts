@@ -20,7 +20,7 @@ export const createExpressCallback =
         // Create messages by error code nad messages
         return next(new AppError(StatusCodes.BAD_REQUEST, 'Database error'));
       }
-
+      console.log(error);
       next(new AppError(StatusCodes.INTERNAL_SERVER_ERROR, 'INTERNAL_SERVER_ERROR'));
     }
   };
