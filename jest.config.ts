@@ -5,6 +5,7 @@ const config: Config = {
   testEnvironment: 'node',
   verbose: true,
   forceExit: true,
-  // clearMocks: true,
+  clearMocks: true,
+  resetMocks: true,
 };
 export default config;
