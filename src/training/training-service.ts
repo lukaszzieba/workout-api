@@ -1,4 +1,4 @@
-import db from '../db';
+import db from '@db';
 import { TTrainingI, TTrainingU } from './training-entity';
 
 const TABLE_NAME = 'training';

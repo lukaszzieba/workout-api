@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import Joi from 'joi';
-import AppError from '../error/error';
-import { StatusCodes } from '../htttp-statuses';
+import { AppError } from '@utils/error';
+import { StatusCodes } from '@utils/htttp-statuses';
 
 export const bodyValidation =
   (schema: Joi.ObjectSchema) => (req: Request, res: Response, next: NextFunction) => {
@@ -23,7 +23,7 @@ export const bodyValidation =
 
 export const paramsValidation =
   (schema: Joi.ObjectSchema) => (req: Request, res: Response, next: NextFunction) => {
-    const { error } = schema.validate(req.params, { abortEarly: true });
+    const { error } = schema.validate(req.params, { abortEarly: false });
     if (error) {
       const { details } = error;
       return next(new AppError(StatusCodes.BAD_REQUEST, 'Wrong id param', details));

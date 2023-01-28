@@ -1,8 +1,8 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-import { createServer } from './utils/createServer';
-import AppError from './utils/error/error';
+import { createServer } from '@server/createServer';
+import { AppError } from '@utils/error';
 
 const PORT = 3000;
 

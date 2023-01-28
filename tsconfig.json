@@ -2,8 +2,7 @@
   "compilerOptions": {
     "target": "es2017",
     "module": "commonjs",
-    "typeRoots": [
-      "./src/types/req.ts", "./node_modules/@types"],
+    "typeRoots": ["./node_modules/@types"],
     "lib": ["dom", "es6", "es2017", "esnext.asynciterable"],
     "skipLibCheck": true,
     "sourceMap": true,
@@ -23,7 +22,19 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "resolveJsonModule": true,
-    "baseUrl": "."
+    "baseUrl": ".",
+    "paths": {
+      "@db": ["src/db"],
+      "@db/*": ["src/db/*"],
+      "@exercise/*": ["src/exercise/*"],
+      "@server/*": ["src/server/*"],
+      "@training/*": ["src/training/*"],
+      "@types": ["src/types"],
+      "@types/*": ["src/types/*"],
+      "@user/*": ["src/user/*"],
+      "@utils/*": ["src/utils/*"],
+      "@workout/*": ["src/workout/*"]
+    }
   },
   "exclude": ["node_modules"],
   "include": ["./src/**/*.ts"]

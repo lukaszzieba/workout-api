@@ -2,9 +2,9 @@ import express from 'express';
 import * as creators from './training-handler';
 import { trainingCrateValidator, trainingUpdateValidator } from './training-validator';
 import { service } from './training-service';
-import { createExpressCallback } from '../utils/express-callback';
-import { bodyValidation, paramsValidation } from '../utils/validators/validation-middleware';
-import { idParamValidator } from '../utils/validators/param-id-validator';
+import { createExpressCallback } from '@utils/express-callback';
+import { bodyValidation, paramsValidation } from '@utils/validators';
+import { idParamValidator } from '@utils/validators';
 
 const router = express.Router();
 

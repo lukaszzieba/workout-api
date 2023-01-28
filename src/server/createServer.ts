@@ -10,9 +10,9 @@ import trainingRouter from '../training/training-routes';
 import userRouter from '../user/user-routes';
 
 import AppError from '../utils/error/error';
-import { handleError } from '../utils/error/error-handler';
-import { StatusCodes } from '../utils/htttp-statuses';
-import { isProd } from '../utils/constans';
+import { handleError } from '@utils/error';
+import { StatusCodes } from '@utils/htttp-statuses';
+import { isProd } from '@utils/constans';
 
 import cors from '../server/cors';
 import session from '../server/session';

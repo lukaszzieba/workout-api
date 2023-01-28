@@ -1,5 +1,5 @@
-import { Exercise } from 'src/exercise/exercise-entity';
-import { BaseEntity } from '../types/base-entity';
+import { Exercise } from '@exercise/exercise-entity';
+import { BaseEntity } from '@types';
 
 export interface Training extends BaseEntity {
   name: string;

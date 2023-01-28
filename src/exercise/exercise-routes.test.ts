@@ -1,8 +1,6 @@
-import AppError from '../utils/error/error';
 import request from 'supertest';
-import { createServer } from '../utils/createServer';
+import { createServer } from '@server/createServer';
 import { service } from './exercise-service';
-import { StatusCodes } from '../utils/htttp-statuses';
 
 const exercise = {
   id: 1,

@@ -1,13 +1,13 @@
 import express from 'express';
 import argon2 from 'argon2';
 
-import { createExpressCallback } from '../utils/express-callback';
-import { bodyValidation, paramsValidation } from '../utils/validators/validation-middleware';
+import { createExpressCallback } from '@utils/express-callback';
+import { bodyValidation, paramsValidation } from '@utils/validators';
 
 import * as creators from './user-hadler';
 import { service } from './user-service';
 import { userCrateValidator, userUpdateValidator } from './user-validator';
-import { idParamValidator } from '../utils/validators/param-id-validator';
+import { idParamValidator } from '@utils/validators';
 
 const router = express.Router();
 

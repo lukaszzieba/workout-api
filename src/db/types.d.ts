@@ -1,7 +1,7 @@
 import { Knex } from 'knex';
-import { Exercise, TExerciseI, TExerciseU } from '../exercise/exercise-entity';
-import { Training, TTrainingI, TTrainingU } from '../training/training-entity';
-import { User, TUserI, TUserU } from '../user/user-entity';
+import { Exercise, TExerciseI, TExerciseU } from '@exercise/exercise-entity';
+import { Training, TTrainingI, TTrainingU } from '@training/training-entity';
+import { User, TUserI, TUserU } from '@user/user-entity';
 
 declare module 'knex/types/tables' {
   interface Tables {

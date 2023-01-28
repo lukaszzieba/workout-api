@@ -33,53 +33,57 @@ export async function seed(knex: Knex): Promise<void> {
     },
   ]);
 
-  await knex('exercise').insert<any>([
-    {
-      name: 'Wyciskanie sztangi w leżeniu na ławce poziomej',
-      short_description: 'Kalteczka',
-      description: ' Opis jak robić',
-      user_id: 1,
-    },
-    {
-      name: 'Przysiad ze sztangą z tyłu',
-      short_description: 'Kopyto',
-      description: ' Opis jak robić',
-      user_id: 1,
-    },
-    {
-      name: 'Martwy ciąg',
-      short_description: 'Ciąg',
-      description: ' Opis jak robić',
-      user_id: 1,
-    },
-    {
-      name: 'Martwy ciąg sumo',
-      short_description: 'Ciąg sumo',
-      description: ' Opis jak robić',
-      user_id: 2,
-    },
-    {
-      name: 'Odwrócony motyl na bramie',
-      short_description: 'Kalteczka',
-      description: ' Opis jak robić',
-      user_id: 2,
-    },
-    {
-      name: 'Wyciskanie żołnierskie hantlami',
-      short_description: 'Barki',
-      description: ' Opis jak robić',
-      user_id: 2,
-    },
-  ]);
+  await knex
+    .insert<any>([
+      {
+        name: 'Wyciskanie sztangi w leżeniu na ławce poziomej',
+        short_description: 'Kalteczka',
+        description: ' Opis jak robić',
+        user_id: 1,
+      },
+      {
+        name: 'Przysiad ze sztangą z tyłu',
+        short_description: 'Kopyto',
+        description: ' Opis jak robić',
+        user_id: 1,
+      },
+      {
+        name: 'Martwy ciąg',
+        short_description: 'Ciąg',
+        description: ' Opis jak robić',
+        user_id: 1,
+      },
+      {
+        name: 'Martwy ciąg sumo',
+        short_description: 'Ciąg sumo',
+        description: ' Opis jak robić',
+        user_id: 2,
+      },
+      {
+        name: 'Odwrócony motyl na bramie',
+        short_description: 'Kalteczka',
+        description: ' Opis jak robić',
+        user_id: 2,
+      },
+      {
+        name: 'Wyciskanie żołnierskie hantlami',
+        short_description: 'Barki',
+        description: ' Opis jak robić',
+        user_id: 2,
+      },
+    ])
+    .table('exercise');
 
-  await knex('training').insert<any>([
-    {
-      name: '5x5',
-      short_description: 'Kasyczne 5 by 5',
-      description: 'Co jak i gdzie',
-      user_id: 1,
-    },
-  ]);
+  await knex
+    .insert<any>([
+      {
+        name: '5x5',
+        short_description: 'Kasyczne 5 by 5',
+        description: 'Co jak i gdzie',
+        user_id: 1,
+      },
+    ])
+    .table('training');
 
   await knex('training_exercise').insert<any>([
     {

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { DatabaseError } from 'pg';
-import AppError from './error/error';
-import { StatusCodes } from './htttp-statuses';
+import { AppError } from '@utils/error';
+import { StatusCodes } from '@utils/htttp-statuses';
 
 export const createExpressCallback =
   (handler: (req: any) => Promise<any>) =>

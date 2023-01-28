@@ -2,7 +2,7 @@ import Redis from 'ioredis';
 import connectRedis from 'connect-redis';
 import session from 'express-session';
 
-import { COOKIE_NAME, isProd } from '../utils/constans';
+import { COOKIE_NAME, isProd } from '@utils/constans';
 
 const redis = new Redis({
   path: process.env.REDIS_URL as string,

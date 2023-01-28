@@ -1,11 +1,11 @@
-import { MyRequest } from '../types/my-request';
-import { Service } from '../types/service-interface';
+import { MyRequest } from '@types';
+import { Service } from '@types';
 import { User, TUserI, TUserU } from './user-entity';
-import { HashUtil } from '../types/hash-util';
+import { HashUtil } from '@types';
 import AppError from '../utils/error/error';
-import { StatusCodes } from '../utils/htttp-statuses';
-import { LoginBody } from '../types/login-body';
-import { TExerciseU } from '../exercise/exercise-entity';
+import { StatusCodes } from '@utils/htttp-statuses';
+import { LoginBody } from '@types';
+import { TExerciseU } from '@exercise/exercise-entity';
 
 type UserService = Service<User, TUserI, TUserU>;
 

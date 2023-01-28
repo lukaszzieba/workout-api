@@ -1,3 +1,3 @@
-import { User } from '../user/user-entity';
+import { User } from '@user/user-entity';
 
 export type LoginBody = Pick<User, 'email' | 'password'>;

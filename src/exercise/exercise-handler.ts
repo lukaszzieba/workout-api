@@ -1,8 +1,7 @@
-import { MyRequest } from '../types/my-request';
-import { Service } from '../types/service-interface';
+import { MyRequest, Service } from '@types';
+import { AppError } from '@utils/error';
+import { StatusCodes } from '@utils/htttp-statuses';
 import { Exercise, TExerciseI, TExerciseU } from './exercise-entity';
-import AppError from '../utils/error/error';
-import { StatusCodes } from '../utils/htttp-statuses';
 
 type ExerciseService = Service<Exercise, TExerciseI, TExerciseU>;
 
