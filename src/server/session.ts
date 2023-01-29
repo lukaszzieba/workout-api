@@ -8,6 +8,7 @@ const redis = new Redis({
   path: process.env.REDIS_URL as string,
   db: 1,
 });
+
 const redisStore = connectRedis(session);
 
 export default session({

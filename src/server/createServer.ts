@@ -5,17 +5,17 @@ import express, { NextFunction, Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import compression from 'compression';
 
-import exerciseRouter from '../exercise/exercise-routes';
-import trainingRouter from '../training/training-routes';
-import userRouter from '../user/user-routes';
+import exerciseRouter from '@exercise/exercise-routes';
+import trainingRouter from '@training/training-routes';
+import userRouter from '@user/user-routes';
 
-import AppError from '../utils/error/error';
+import AppError from '@utils/error/error';
 import { handleError } from '@utils/error';
 import { StatusCodes } from '@utils/htttp-statuses';
 import { isProd } from '@utils/constans';
 
-import cors from '../server/cors';
-import session from '../server/session';
+import cors from '@server/cors';
+import session from '@server/session';
 
 export const createServer = () => {
   const app = express();

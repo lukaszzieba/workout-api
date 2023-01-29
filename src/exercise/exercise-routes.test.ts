@@ -63,4 +63,8 @@ describe('Exercise routes', () => {
       expect(serviceMock).toBeCalled();
     });
   });
+
+  describe('Create one exercise POST /v1/exercise', () => {
+    it('should respond with status 200 on success', async () => {});
+  });
 });
