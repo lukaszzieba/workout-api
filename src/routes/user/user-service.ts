@@ -1,4 +1,4 @@
-import db from '../db';
+import db from '@db';
 import { TUserI, TUserU } from './user-entity';
 
 const TABLE_NAME = 'users';

@@ -1,6 +1,6 @@
 import { MyRequest, Service } from '@types';
-import { Training, TTrainingI, TTrainingU } from '@training/training-entity';
-import { TExerciseU } from '@exercise/exercise-entity';
+import { Training, TTrainingI, TTrainingU } from './training-entity';
+import { TExerciseU } from '@routes/exercise/exercise-entity';
 
 type TrainingService = Service<Training, TTrainingI, TTrainingU>;
 

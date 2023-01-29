@@ -2,10 +2,9 @@ import { MyRequest } from '@types';
 import { Service } from '@types';
 import { User, TUserI, TUserU } from './user-entity';
 import { HashUtil } from '@types';
-import AppError from '../utils/error/error';
+import AppError from '@utils/error/error';
 import { StatusCodes } from '@utils/htttp-statuses';
 import { LoginBody } from '@types';
-import { TExerciseU } from '@exercise/exercise-entity';
 
 type UserService = Service<User, TUserI, TUserU>;
 
@@ -29,7 +28,7 @@ export const getOneUserHandler =
 
 export const updateOneUserHandler =
   (userService: UserService) =>
-  async ({ params: { id }, body }: MyRequest<TExerciseU, { id: number }>) => {
+  async ({ params: { id }, body }: MyRequest<TUserU, { id: number }>) => {
     return await userService.update(id, body);
   };
 

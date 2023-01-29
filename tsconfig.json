@@ -26,12 +26,10 @@
     "paths": {
       "@db": ["src/db"],
       "@db/*": ["src/db/*"],
-      "@exercise/*": ["src/exercise/*"],
+      "@routes/*": ["src/routes/*"],
       "@server/*": ["src/server/*"],
-      "@training/*": ["src/training/*"],
       "@types": ["src/types"],
       "@types/*": ["src/types/*"],
-      "@user/*": ["src/user/*"],
       "@utils/*": ["src/utils/*"],
       "@workout/*": ["src/workout/*"]
     }

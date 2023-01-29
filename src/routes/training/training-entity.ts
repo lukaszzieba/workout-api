@@ -1,4 +1,4 @@
-import { Exercise } from '@exercise/exercise-entity';
+import { Exercise } from '@routes/exercise/exercise-entity';
 import { BaseEntity } from '@types';
 
 export interface Training extends BaseEntity {
