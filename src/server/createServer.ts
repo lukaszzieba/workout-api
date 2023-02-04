@@ -8,6 +8,7 @@ import compression from 'compression';
 import exerciseRouter from '@routes/exercise/exercise-routes';
 import trainingRouter from '@routes/training/training-routes';
 import userRouter from '@routes/user/user-routes';
+import planRouter from '@routes/plan/plan-routes';
 
 import AppError from '@utils/error/error';
 import { handleError } from '@utils/error';
@@ -31,6 +32,7 @@ export const createServer = () => {
   router.use('/exercises', exerciseRouter);
   router.use('/training', trainingRouter);
   router.use('/user', userRouter);
+  router.use('/plan', planRouter);
 
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());

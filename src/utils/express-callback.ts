@@ -18,7 +18,8 @@ export const createExpressCallback =
       if (error instanceof DatabaseError) {
         // TODO
         // Create messages by error code nad messages
-        return next(new AppError(StatusCodes.BAD_REQUEST, 'Database error'));
+        console.log(error);
+        return next(new AppError(StatusCodes.INTERNAL_SERVER_ERROR, 'Database error'));
       }
       console.log(error);
       next(new AppError(StatusCodes.INTERNAL_SERVER_ERROR, 'INTERNAL_SERVER_ERROR'));

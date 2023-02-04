@@ -56,4 +56,8 @@ const deleteOne = async (id: number) => {
   return deleted;
 };
 
-export const service = { getAll, getOne, create, update, deleteOne };
+const getByPlanId = async (planId: number) => {
+  return await db.select('*').from(TABLE_NAME).where({ planId });
+};
+
+export const service = { getAll, getOne, create, update, deleteOne, getByPlanId };

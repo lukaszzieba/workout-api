@@ -1,6 +1,6 @@
 import request from 'supertest';
 import { createServer } from '@server/createServer';
-import { service } from './exercise-service';
+import { service } from '@routes/exercise/exercise-service';
 
 const exercise = {
   id: 1,

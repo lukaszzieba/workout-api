@@ -1,8 +1,6 @@
-import { MyRequest, Service } from '@types';
-import { Training, TTrainingI, TTrainingU } from './training-entity';
+import { MyRequest } from '@types';
 import { TExerciseU } from '@routes/exercise/exercise-entity';
-
-type TrainingService = Service<Training, TTrainingI, TTrainingU>;
+import { TrainingService } from '@routes/training/types';
 
 export const getAllTrainingHandler = (exerciseService: TrainingService) => async () =>
   await exerciseService.getAll();
