@@ -1,9 +1,12 @@
 import express from 'express';
-import * as creators from './exercise-handler';
-import { exerciseCrateValidator, exerciseUpdateValidator } from './exercise-validator';
-import { service } from './exercise-service';
 import { createExpressCallback } from '@utils/express-callback';
 import { bodyValidation, idParamValidator, paramsValidation } from '@utils/validators';
+import * as creators from '@routes/exercise/exercise-handler';
+import {
+  exerciseCrateValidator,
+  exerciseUpdateValidator,
+} from '@routes/exercise/exercise-validator';
+import { service } from '@routes/exercise/exercise-service';
 
 const router = express.Router();
 

@@ -1,5 +1,5 @@
 import db from '@db';
-import { TExerciseI, TExerciseU } from './exercise-entity';
+import { TExerciseEntityI, TExerciseEntityU } from '@routes/exercise/types';
 
 const TABLE_NAME = 'exercise';
 
@@ -15,7 +15,7 @@ const getOne = async (id: number) => {
   return one;
 };
 
-const create = async (exercise: TExerciseI) => {
+const create = async (exercise: TExerciseEntityI) => {
   const [created] = await db(TABLE_NAME)
     .insert({
       ...exercise,
@@ -25,7 +25,7 @@ const create = async (exercise: TExerciseI) => {
   return created;
 };
 
-export const update = async (id: number, exercise: TExerciseU) => {
+export const update = async (id: number, exercise: TExerciseEntityU) => {
   const [updated] = await db(TABLE_NAME)
     .where({ id })
     .update({

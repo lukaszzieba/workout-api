@@ -1,6 +1,6 @@
 import { MyRequest } from '@types';
-import { TExerciseU } from '@routes/exercise/exercise-entity';
 import { TrainingService } from '@routes/training/types';
+import { TTrainingU } from '@routes/training/training-entity';
 
 export const getAllTrainingHandler = (exerciseService: TrainingService) => async () =>
   await exerciseService.getAll();
@@ -19,7 +19,7 @@ export const createNewTrainingHandler =
 
 export const updateOneTrainingHandler =
   (exerciseService: TrainingService) =>
-  async ({ params: { id }, body }: MyRequest<TExerciseU, { id: number }>) => {
+  async ({ params: { id }, body }: MyRequest<TTrainingU, { id: number }>) => {
     return await exerciseService.update(id, body);
   };
 

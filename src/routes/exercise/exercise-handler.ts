@@ -1,11 +1,14 @@
 import { MyRequest, Service } from '@types';
 import { AppError } from '@utils/error';
 import { StatusCodes } from '@utils/htttp-statuses';
-import { Exercise, TExerciseI, TExerciseU } from './exercise-entity';
+import {
+  ExerciseEntity,
+  TExerciseEntityI,
+  TExerciseEntityU,
+  ExerciseService,
+} from '@routes/exercise/types';
 
-type ExerciseService = Service<Exercise, TExerciseI, TExerciseU>;
-
-export const getAllExerciseHandler = (exerciseService: Service<Exercise>) => async () =>
+export const getAllExerciseHandler = (exerciseService: Service<ExerciseEntity>) => async () =>
   await exerciseService.getAll();
 
 export const getOneExerciseHandler =
@@ -13,25 +16,35 @@ export const getOneExerciseHandler =
   async ({ params: { id } }: MyRequest<never, { id: number }>) => {
     const exercise = await exerciseService.getOne(id);
 
-    if (exercise) return exercise;
+    if (!exercise) {
+      throw new AppError(StatusCodes.NOT_FOUND, 'NOT FOUND');
+    }
 
-    throw new AppError(StatusCodes.NOT_FOUND, 'NOT FOUND');
+    return exercise;
   };
 
 export const createNewExerciseHandler =
   (exerciseService: ExerciseService) =>
-  async ({ body }: MyRequest<TExerciseI>) => {
-    return await exerciseService.create(body);
+  async ({ body }: MyRequest<TExerciseEntityI>) => {
+    const exercise = await exerciseService.create(body);
+
+    if (!exercise) {
+      throw new AppError(StatusCodes.INTERNAL_SERVER_ERROR, 'INTERNAL SERVER ERROR');
+    }
+
+    return exercise;
   };
 
 export const updateOneExerciseHandler =
   (exerciseService: ExerciseService) =>
-  async ({ params: { id }, body }: MyRequest<TExerciseU, { id: number }>) => {
+  async ({ params: { id }, body }: MyRequest<TExerciseEntityU, { id: number }>) => {
     const exercise = await exerciseService.update(id, body);
 
-    if (exercise) return exercise;
+    if (!exercise) {
+      throw new AppError(StatusCodes.NOT_FOUND, 'NOT FOUND');
+    }
 
-    throw new AppError(StatusCodes.NOT_FOUND, 'NOT FOUND');
+    return exercise;
   };
 
 export const deleteOneExerciseHandler =
@@ -39,7 +52,9 @@ export const deleteOneExerciseHandler =
   async ({ params: { id } }: MyRequest<never, { id: number }>) => {
     const exercise = await exerciseService.deleteOne(id);
 
-    if (exercise) return exercise;
+    if (!exercise) {
+      throw new AppError(StatusCodes.NOT_FOUND, 'NOT FOUND');
+    }
 
-    throw new AppError(StatusCodes.NOT_FOUND, 'NOT FOUND');
+    return exercise;
   };

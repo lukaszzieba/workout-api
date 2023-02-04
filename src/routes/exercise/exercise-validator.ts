@@ -1,18 +1,14 @@
 import Joi from 'Joi';
-import { TExerciseI, TExerciseU } from './exercise-entity';
+import { TExerciseEntityI, TExerciseEntityU } from '@routes/exercise/types';
 
-export const exerciseCrateValidator = Joi.object<TExerciseI>({
+export const exerciseCrateValidator = Joi.object<TExerciseEntityI>({
   name: Joi.string().required(),
   shortDescription: Joi.string().alphanum().required(),
   description: Joi.string().required(),
-  createdAt: Joi.date().optional(),
-  updatedAt: Joi.date().optional(),
 });
 
-export const exerciseUpdateValidator = Joi.object<TExerciseU>({
+export const exerciseUpdateValidator = Joi.object<TExerciseEntityU>({
   name: Joi.string().optional(),
   shortDescription: Joi.string().alphanum().optional(),
   description: Joi.string().optional(),
-  createdAt: Joi.date().optional(),
-  updatedAt: Joi.date().optional(),
-})
+});
