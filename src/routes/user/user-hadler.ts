@@ -1,41 +1,55 @@
-import { MyRequest } from '@types';
-import { Service } from '@types';
-import { User, TUserI, TUserU } from './user-entity';
-import { HashUtil } from '@types';
+import { MyRequest, HashUtil } from '@types';
 import AppError from '@utils/error/error';
 import { StatusCodes } from '@utils/htttp-statuses';
-import { LoginBody } from '@types';
+import { TUserEntityU, UserService, User, LoginBody, UserEntity } from '@routes/user/types';
 
-type UserService = Service<User, TUserI, TUserU>;
-
-const userMapper = ({ id, name, lastname, email, createdAt, updatedAt }: User) => ({
+const userMapper = ({ id, name, lastname, email }: UserEntity): User => ({
   id,
   name,
   lastname,
   email,
-  createdAt,
-  updatedAt,
 });
 
-export const getAllUserHandler = (userService: UserService) => async () =>
-  await userService.getAll();
+export const getAllUserHandler = (userService: UserService) => async () => {
+  const users = await userService.getAll();
+
+  return users.map(userMapper);
+};
 
 export const getOneUserHandler =
   (userService: UserService) =>
   async ({ params: { id } }: MyRequest<never, { id: number }>) => {
-    return await userService.getOne(+id);
+    const user = await userService.getOne(id);
+
+    if (!user) {
+      throw new AppError(StatusCodes.NOT_FOUND, 'NOT FOUND');
+    }
+
+    return userMapper(user);
   };
 
 export const updateOneUserHandler =
   (userService: UserService) =>
-  async ({ params: { id }, body }: MyRequest<TUserU, { id: number }>) => {
-    return await userService.update(id, body);
+  async ({ params: { id }, body }: MyRequest<TUserEntityU, { id: number }>) => {
+    const user = await userService.update(id, body);
+
+    if (!user) {
+      throw new AppError(StatusCodes.NOT_FOUND, 'NOT FOUND');
+    }
+
+    return userMapper(user);
   };
 
 export const deleteOneUserHandler =
   (userService: UserService) =>
   async ({ params: { id } }: MyRequest<never, { id: number }>) => {
-    return await userService.deleteOne(id);
+    const user = await userService.deleteOne(id);
+
+    if (!user) {
+      throw new AppError(StatusCodes.NOT_FOUND, 'NOT FOUND');
+    }
+
+    return userMapper(user);
   };
 
 export const createUserHandler =

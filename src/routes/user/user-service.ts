@@ -1,5 +1,5 @@
 import db from '@db';
-import { TUserI, TUserU } from './user-entity';
+import { TUserEntityI, TUserEntityU } from '@routes/user/types';
 
 const TABLE_NAME = 'users';
 
@@ -15,7 +15,7 @@ const getOne = async (id: number) => {
   return one;
 };
 
-const create = async (user: TUserI) => {
+const create = async (user: TUserEntityI) => {
   const [created] = await db(TABLE_NAME)
     .insert({
       ...user,
@@ -25,7 +25,7 @@ const create = async (user: TUserI) => {
   return created;
 };
 
-export const update = async (id: number, user: TUserU) => {
+export const update = async (id: number, user: TUserEntityU) => {
   const [updated] = await db(TABLE_NAME)
     .where({ id })
     .update({
