@@ -26,4 +26,4 @@ const config: Knex.Config = {
   ...seed,
 };
 
-module.exports = config;
+export default config;

@@ -10,11 +10,11 @@ export async function seed(knex: Knex): Promise<void> {
   await knex('training').del();
   await knex.raw('ALTER SEQUENCE training_id_seq RESTART WITH 1');
 
-  await knex('users').del();
-  await knex.raw('ALTER SEQUENCE users_id_seq RESTART WITH 1');
-
   await knex('plan').del();
   await knex.raw('ALTER SEQUENCE plan_id_seq RESTART WITH 1');
+
+  await knex('users').del();
+  await knex.raw('ALTER SEQUENCE users_id_seq RESTART WITH 1');
 
   // Inserts seed entries
   await knex('users').insert<any>([

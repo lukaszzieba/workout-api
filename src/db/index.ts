@@ -1,6 +1,6 @@
 import knex from 'knex';
 const knexStringcase = require('knex-stringcase');
-const config = require('./knexfile');
+import config from './knexfile';
 
 const options = knexStringcase(config);
 const knexInstance = knex(options);
