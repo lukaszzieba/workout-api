@@ -1,10 +1,13 @@
 import express from 'express';
-import * as creators from './training-handler';
-import { trainingCrateValidator, trainingUpdateValidator } from './training-validator';
-import { service } from './training-service';
-import { createExpressCallback } from '@utils/express-callback';
-import { bodyValidation, paramsValidation } from '@utils/validators';
 import { idParamValidator } from '@utils/validators';
+import { bodyValidation, paramsValidation } from '@utils/validators';
+import { createExpressCallback } from '@utils/express-callback';
+import * as creators from '@routes/training/training-handler';
+import {
+  trainingCrateValidator,
+  trainingUpdateValidator,
+} from '@routes/training/training-validator';
+import { service } from '@routes/training/training-service';
 
 const router = express.Router();
 

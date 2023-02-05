@@ -1,30 +1,62 @@
 import { MyRequest } from '@types';
-import { TrainingService } from '@routes/training/types';
-import { TTrainingU } from '@routes/training/training-entity';
+import { AppError } from '@utils/error';
+import { StatusCodes } from '@utils/htttp-statuses';
+import { TrainingService, TTrainingEntityU } from '@routes/training/types';
 
-export const getAllTrainingHandler = (exerciseService: TrainingService) => async () =>
-  await exerciseService.getAll();
+export const getAllTrainingHandler = (trainingService: TrainingService) => async () => {
+  const trainigs = await trainingService.getAll();
+
+  if (!trainigs) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'NOT FOUND');
+  }
+
+  return trainigs;
+};
 
 export const getOneTrainingHandler =
-  (exerciseService: TrainingService) =>
+  (trainingService: TrainingService) =>
   async ({ params: { id } }: MyRequest<never, { id: number }>) => {
-    return await exerciseService.getOne(id);
+    const training = await trainingService.getOne(id);
+
+    if (!training) {
+      throw new AppError(StatusCodes.NOT_FOUND, 'NOT FOUND');
+    }
+
+    return training;
   };
 
 export const createNewTrainingHandler =
-  (exerciseService: TrainingService) =>
+  (trainingService: TrainingService) =>
   async ({ body }: MyRequest) => {
-    return await exerciseService.create(body);
+    const training = await trainingService.create(body);
+
+    if (!training) {
+      throw new AppError(StatusCodes.NOT_FOUND, 'NOT FOUND');
+    }
+
+    return training;
   };
 
 export const updateOneTrainingHandler =
-  (exerciseService: TrainingService) =>
-  async ({ params: { id }, body }: MyRequest<TTrainingU, { id: number }>) => {
-    return await exerciseService.update(id, body);
+  (trainingService: TrainingService) =>
+  async ({ params: { id }, body }: MyRequest<TTrainingEntityU, { id: number }>) => {
+    const training = await trainingService.update(id, body);
+
+    if (!training) {
+      throw new AppError(StatusCodes.NOT_FOUND, 'NOT FOUND');
+    }
+
+    return training;
   };
 
 export const deleteOneTrainingHandler =
-  (exerciseService: TrainingService) =>
+  (trainingService: TrainingService) =>
   async ({ params: { id } }: MyRequest) => {
-    return await exerciseService.deleteOne(id);
+    const training = await trainingService.deleteOne(id);
+
+    if (!training) {
+      throw new AppError(StatusCodes.NOT_FOUND, 'NOT FOUND');
+    }
+
+    return training;
   };

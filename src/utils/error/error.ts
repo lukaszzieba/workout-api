@@ -3,7 +3,7 @@ import { StatusCodes } from '../htttp-statuses';
 export default class AppError extends Error {
   statusCode: StatusCodes;
   isOperational: boolean;
-  stack: string;
+  stack: string = '';
   details: any[];
 
   constructor(

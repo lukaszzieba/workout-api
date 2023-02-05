@@ -1,10 +1,10 @@
-import { Training } from '@routes/training/training-entity';
+import { TrainingEntity } from '@routes/training/training-entity';
 import { BaseEntity } from '@types';
 
 export interface Plan extends BaseEntity {
   name: string;
   description: string;
-  trainings: Training[];
+  trainings: TrainingEntity[];
 }
 
 export type TPlanI = Pick<Plan, 'name' | 'description'> &

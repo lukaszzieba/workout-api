@@ -1,21 +1,41 @@
 import db from '@db';
-import { TTrainingI, TTrainingU } from './training-entity';
+import {
+  ExerciseForTraining,
+  Training,
+  TrainingEntity,
+  TrainingService,
+  TTrainingEntityI,
+  TTrainingEntityU,
+} from '@routes/training/types';
 
 const TABLE_NAME = 'training';
 
+const trainingMapper = (
+  { id, name, shortDescription, description }: TrainingEntity,
+  exercises: ExerciseForTraining[],
+): Training => ({
+  id,
+  name,
+  shortDescription,
+  description,
+  exercises,
+});
+
 const getAll = async () => {
-  const all = await db(TABLE_NAME).select('*');
+  const all = await db('training').select('*');
 
   return all;
 };
 
 const getOne = async (id: number) => {
-  const [one] = await db(TABLE_NAME).where({ id }).select('*');
+  const [training] = await db(TABLE_NAME).where({ id }).select('*');
 
-  const exercise = await db(TABLE_NAME)
+  const exercise = await db<ExerciseForTraining>(TABLE_NAME)
     .join('training_exercise', 'training.id', '=', 'training_exercise.training_id')
     .join('exercise', 'exercise.id', '=', 'training_exercise.exercise_id')
+    .where({ trainingId: training.id })
     .select(
+      'exercise.id',
       'exercise.name',
       'exercise.short_description',
       'exercise.description',
@@ -24,10 +44,10 @@ const getOne = async (id: number) => {
       'training_exercise.tempo',
     );
 
-  return { ...one, exercise };
+  return trainingMapper(training, exercise);
 };
 
-const create = async (training: TTrainingI) => {
+const create = async (training: TTrainingEntityI): Promise<Training> => {
   const [created] = await db(TABLE_NAME)
     .insert({
       ...training,
@@ -37,7 +57,7 @@ const create = async (training: TTrainingI) => {
   return created;
 };
 
-const update = async (id: number, training: TTrainingU) => {
+const update = async (id: number, training: TTrainingEntityU) => {
   const [updated] = await db(TABLE_NAME)
     .where({ id })
     .update({
@@ -60,4 +80,4 @@ const getByPlanId = async (planId: number) => {
   return await db.select('*').from(TABLE_NAME).where({ planId });
 };
 
-export const service = { getAll, getOne, create, update, deleteOne, getByPlanId };
+export const service: TrainingService = { getAll, getOne, create, update, deleteOne, getByPlanId };
