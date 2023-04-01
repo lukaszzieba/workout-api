@@ -28,6 +28,7 @@
     "joi": "^17.6.3",
     "knex": "^2.3.0",
     "knex-stringcase": "^1.4.6",
+    "knex-tiny-logger": "^2.1.0",
     "pg": "^8.8.0"
   },
   "devDependencies": {

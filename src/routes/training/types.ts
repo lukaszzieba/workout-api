@@ -19,7 +19,12 @@ export type TrainingService = Service<Training, TTrainingEntityI, TTrainingEntit
 };
 
 export type Training = Pick<TrainingEntity, 'id' | 'name' | 'shortDescription' | 'description'> & {
-  exercises: ExerciseForTraining[];
+  exercises?: ExerciseForTraining[];
 };
 
-export type ExerciseForTraining = Exercise & { sets: number; reps: number; tempo: string };
+export type ExerciseForTraining = Exercise & {
+  sets: number;
+  reps: number;
+  tempo: string | null;
+  rest: string | null;
+};

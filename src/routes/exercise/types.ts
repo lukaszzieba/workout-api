@@ -1,3 +1,4 @@
+import { User } from '@routes/user/types';
 import { BaseEntity, Service } from '@types';
 
 export type ExerciseEntity = BaseEntity & {
@@ -11,4 +12,6 @@ export type TExerciseEntityU = Partial<TExerciseEntityI>;
 
 export type ExerciseService = Service<ExerciseEntity, TExerciseEntityI, TExerciseEntityU>;
 
-export type Exercise = Pick<ExerciseEntity, 'id' | 'name' | 'shortDescription' | 'description'>;
+export type Exercise = Pick<ExerciseEntity, 'id' | 'name' | 'shortDescription' | 'description'> & {
+  creator: User;
+};

@@ -1,22 +1,22 @@
 import db from '@db';
-import { TUserEntityI, TUserEntityU } from '@routes/user/types';
+import { TUserEntityI, TUserEntityU, UserEntity } from '@routes/user/types';
 
 const TABLE_NAME = 'users';
 
 const getAll = async () => {
-  const all = await db(TABLE_NAME).select('*');
+  const all = await db.select('*').from<UserEntity>(TABLE_NAME);
 
   return all;
 };
 
 const getOne = async (id: number) => {
-  const [one] = await db(TABLE_NAME).where({ id }).select('*');
+  const [one] = await db.select('*').from<UserEntity>(TABLE_NAME).where({ id });
 
   return one;
 };
 
 const create = async (user: TUserEntityI) => {
-  const [created] = await db(TABLE_NAME)
+  const [created] = await db<UserEntity>(TABLE_NAME)
     .insert({
       ...user,
     })
@@ -26,7 +26,7 @@ const create = async (user: TUserEntityI) => {
 };
 
 export const update = async (id: number, user: TUserEntityU) => {
-  const [updated] = await db(TABLE_NAME)
+  const [updated] = await db<UserEntity>(TABLE_NAME)
     .where({ id })
     .update({
       ...user,
@@ -36,13 +36,13 @@ export const update = async (id: number, user: TUserEntityU) => {
 };
 
 const deleteOne = async (id: number) => {
-  const [deleted] = await db(TABLE_NAME).where({ id }).delete().returning('*');
+  const [deleted] = await db<UserEntity>(TABLE_NAME).where({ id }).delete().returning('*');
 
   return deleted;
 };
 
 const getOneByEmail = async (email: string) => {
-  const [one] = await db(TABLE_NAME).where({ email }).select('*');
+  const [one] = await db.select('*').from(TABLE_NAME).where({ email });
 
   return one;
 };
