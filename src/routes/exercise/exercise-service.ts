@@ -45,7 +45,7 @@ const getOne = async (id: number) => {
 };
 
 const create = async (exercise: TExerciseEntityI) => {
-  const created = await newDb
+  return await newDb
     .insertInto(TABLE_NAME)
     .values({
       name: exercise.name,
@@ -65,12 +65,10 @@ const create = async (exercise: TExerciseEntityI) => {
       ),
     ])
     .executeTakeFirst();
-
-  return created;
 };
 
 export const update = async (id: number, exercise: TExerciseEntityU) => {
-  const updated = await newDb
+  return await newDb
     .updateTable(TABLE_NAME)
     .set({ ...exercise })
     .where('id', '=', id)
@@ -86,8 +84,6 @@ export const update = async (id: number, exercise: TExerciseEntityU) => {
       ),
     ])
     .executeTakeFirst();
-
-  return updated;
 };
 
 const deleteOne = async (id: number) => {

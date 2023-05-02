@@ -3,7 +3,12 @@ import AppError from '@utils/error/error';
 import { StatusCodes } from '@utils/htttp-statuses';
 import { TUserEntityU, UserService, User, LoginBody, UserEntity } from '@routes/user/types';
 
-const userMapper = ({ id, name, lastname, email }: UserEntity): User => ({
+const userMapper = ({
+  id,
+  name,
+  lastname,
+  email,
+}: User): Pick<User, 'id' | 'name' | 'lastname' | 'email'> => ({
   id,
   name,
   lastname,
@@ -62,9 +67,14 @@ export const createUserHandler =
     const { password } = body;
     const hashedPassword = await hashUtil.hash(password);
     const user = await userService.create({ ...body, password: hashedPassword });
-    req.session.userId = user?.id;
 
-    return userMapper(user!);
+    if (!user) {
+      throw new AppError(StatusCodes.NOT_FOUND, 'NOT FOUND');
+    }
+
+    req.session.userId = user.id;
+
+    return userMapper(user);
   };
 
 export const loginHandler =

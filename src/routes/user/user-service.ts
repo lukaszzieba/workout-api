@@ -1,50 +1,55 @@
-import db from '@db';
-import { TUserEntityI, TUserEntityU, UserEntity } from '@routes/user/types';
+import { newDb } from '../../new-db/index';
+import { TUserEntityI, TUserEntityU } from '@routes/user/types';
 
 const TABLE_NAME = 'users';
 
 const getAll = async () => {
-  const all = await db.select('*').from<UserEntity>(TABLE_NAME);
-
-  return all;
+  return newDb
+    .selectFrom(TABLE_NAME)
+    .select(['id', 'name', 'lastname', 'email', 'password'])
+    .execute();
 };
 
 const getOne = async (id: number) => {
-  const [one] = await db.select('*').from<UserEntity>(TABLE_NAME).where({ id });
-
-  return one;
+  return newDb
+    .selectFrom(TABLE_NAME)
+    .select(['id', 'name', 'lastname', 'email', 'password'])
+    .where('id', '=', id)
+    .executeTakeFirst();
 };
 
 const create = async (user: TUserEntityI) => {
-  const [created] = await db<UserEntity>(TABLE_NAME)
-    .insert({
-      ...user,
+  return await newDb
+    .insertInto(TABLE_NAME)
+    .values({
+      name: user.name,
+      lastname: user.lastname,
+      email: user.email,
+      password: user.password,
     })
-    .returning('*');
-
-  return created;
+    .returning(['id', 'name', 'lastname', 'email', 'password'])
+    .executeTakeFirst();
 };
 
 export const update = async (id: number, user: TUserEntityU) => {
-  const [updated] = await db<UserEntity>(TABLE_NAME)
-    .where({ id })
-    .update({
-      ...user,
-    })
-    .returning('*');
-  return updated;
+  return await newDb
+    .updateTable(TABLE_NAME)
+    .set({ ...user })
+    .where('id', '=', id)
+    .returning(['id', 'name', 'lastname', 'email', 'password'])
+    .executeTakeFirst();
 };
 
 const deleteOne = async (id: number) => {
-  const [deleted] = await db<UserEntity>(TABLE_NAME).where({ id }).delete().returning('*');
+  const deleted = await newDb.deleteFrom(TABLE_NAME).where('id', '=', id).executeTakeFirst();
 
-  return deleted;
+  return deleted.numDeletedRows;
 };
 
 const getOneByEmail = async (email: string) => {
-  const [one] = await db.select('*').from(TABLE_NAME).where({ email });
+  const deleted = await newDb.deleteFrom(TABLE_NAME).where('email', '=', email).executeTakeFirst();
 
-  return one;
+  return deleted.numDeletedRows;
 };
 
 export const service = { getAll, getOne, create, update, deleteOne, getOneByEmail };

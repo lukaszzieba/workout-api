@@ -4,5 +4,5 @@ export interface Service<T, InsertType = T, UpdateType = T> {
   create: (entity: InsertType) => Promise<T | undefined>;
   update: (id: number, entity: UpdateType) => Promise<T | undefined>;
   deleteOne: (id: number) => Promise<any>;
-  getOneByEmail?: (email: string) => Promise<T>;
+  getOneByEmail?: (email: string) => Promise<any>;
 }
