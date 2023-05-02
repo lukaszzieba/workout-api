@@ -21,7 +21,7 @@ const trainingMapper = (
 });
 
 const getAll = async () => {
-  const all = await db.from(TABLE_NAME).select('*');
+  const all = await db.select('*').from<TrainingEntity>(TABLE_NAME);
 
   const exercises = await db(TABLE_NAME)
     .join('training_exercise', 'training.id', '=', 'training_exercise.training_id')

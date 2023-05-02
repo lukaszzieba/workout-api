@@ -1,14 +1,9 @@
-import { MyRequest, Service } from '@types';
+import { MyRequest } from '@types';
 import { AppError } from '@utils/error';
 import { StatusCodes } from '@utils/htttp-statuses';
-import {
-  ExerciseEntity,
-  TExerciseEntityI,
-  TExerciseEntityU,
-  ExerciseService,
-} from '@routes/exercise/types';
+import { TExerciseEntityI, TExerciseEntityU, ExerciseService } from '@routes/exercise/types';
 
-export const getAllExerciseHandler = (exerciseService: Service<ExerciseEntity>) => async () =>
+export const getAllExerciseHandler = (exerciseService: ExerciseService) => async () =>
   await exerciseService.getAll();
 
 export const getOneExerciseHandler =

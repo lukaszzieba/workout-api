@@ -13,6 +13,10 @@ const userMapper = ({ id, name, lastname, email }: UserEntity): User => ({
 export const getAllUserHandler = (userService: UserService) => async () => {
   const users = await userService.getAll();
 
+  if (!users) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'NOT FOUND');
+  }
+
   return users.map(userMapper);
 };
 
@@ -58,9 +62,9 @@ export const createUserHandler =
     const { password } = body;
     const hashedPassword = await hashUtil.hash(password);
     const user = await userService.create({ ...body, password: hashedPassword });
-    req.session.userId = user.id;
+    req.session.userId = user?.id;
 
-    return userMapper(user);
+    return userMapper(user!);
   };
 
 export const loginHandler =

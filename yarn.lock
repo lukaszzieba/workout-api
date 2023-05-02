@@ -2478,6 +2478,11 @@ knex@^2.3.0:
     tarn "^3.0.2"
     tildify "2.0.0"
 
+kysely@^0.24.2:
+  version "0.24.2"
+  resolved "https://registry.yarnpkg.com/kysely/-/kysely-0.24.2.tgz#caf3be037939bd20449c0b7840e932f074b4d12c"
+  integrity sha512-+7eaTJNUYm2yRq1x+lEOZc+78TO35dTZ9b0dh49+Z9CTt2byMSbMiOKpwPlOyCAaHD4kILkAYWYZNywFlmBwRA==
+
 leven@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/leven/-/leven-3.1.0.tgz#77891de834064cccba82ae7842bb6b14a13ed7f2"

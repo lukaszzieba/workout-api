@@ -1,75 +1,99 @@
-import db from '@db';
-import { allExerciseQuery, exerciseQuery } from '@routes/exercise/queries';
-import {
-  Exercise,
-  // Exercise,
-  ExerciseEntity,
-  TExerciseEntityI,
-  TExerciseEntityU,
-} from '@routes/exercise/types';
-import { Knex } from 'knex';
-// import { UserEntity } from '@routes/user/types';
-// import { service as userService } from '@routes/user/user-service';
+import { sql } from 'kysely';
+import { newDb } from '../../new-db/index';
+import { User } from '@routes/user/types';
+import { TExerciseEntityI, TExerciseEntityU } from '@routes/exercise/types';
 
 const TABLE_NAME = 'exercise';
 
-// const exerciseMapper = (
-//   { id, name, description, shortDescription }: ExerciseEntity,
-//   user: UserEntity,
-// ): Exercise => ({
-//   id,
-//   name,
-//   description,
-//   shortDescription,
-//   creator: { id: user.id, name: user.name, lastname: user.lastname, email: user.email },
-// });
-
 const getAll = async () => {
-  // TODO
-  // try some data loader for test different approach
-  const asd = await db.raw(allExerciseQuery());
-  console.log(asd);
-  return asd.rows;
+  const a = await newDb
+    .selectFrom(TABLE_NAME)
+    .innerJoin('users', 'users.id', 'exercise.userId')
+    .select([
+      'exercise.id',
+      'exercise.createdAt',
+      'exercise.updatedAt',
+      'exercise.name',
+      'exercise.description',
+      'exercise.shortDescription',
+      sql<User>`jsonb_build_object('id', users.id, 'name', users.name, 'lastname', users.lastname, 'email', users.email )`.as(
+        'creator',
+      ),
+    ])
+    .execute();
+
+  return a;
 };
 
 const getOne = async (id: number) => {
-  // const [one] = await db.select('*').from<ExerciseEntity>(TABLE_NAME).where({ id });
-  // const user = await userService.getOne(one.userId);
-  //
-  // return exerciseMapper(one, user);
-
-  const {
-    rows: [row],
-  } = await db.raw(exerciseQuery(id));
-
-  return row;
+  return await newDb
+    .selectFrom(TABLE_NAME)
+    .innerJoin('users', 'users.id', 'exercise.userId')
+    .select([
+      'exercise.id',
+      'exercise.createdAt',
+      'exercise.updatedAt',
+      'exercise.name',
+      'exercise.description',
+      'exercise.shortDescription',
+      sql<User>`jsonb_build_object('id', users.id, 'name', users.name, 'lastname', users.lastname, 'email', users.email )`.as(
+        'creator',
+      ),
+    ])
+    .where('exercise.id', '=', id)
+    .executeTakeFirst();
 };
 
 const create = async (exercise: TExerciseEntityI) => {
-  const [created] = await db<ExerciseEntity>(TABLE_NAME)
-    .insert({
-      ...exercise,
+  const created = await newDb
+    .insertInto(TABLE_NAME)
+    .values({
+      name: exercise.name,
+      description: exercise.description,
+      shortDescription: exercise.shortDescription,
+      userId: 1,
     })
-    .returning('*');
+    .returning([
+      'id',
+      'createdAt',
+      'updatedAt',
+      'name',
+      'description',
+      'shortDescription',
+      sql<User>`(select row_to_json(users) from (select id, created_at, updated_at, name, lastname, email from users u where id = 1) as users)`.as(
+        'creator',
+      ),
+    ])
+    .executeTakeFirst();
 
   return created;
 };
 
 export const update = async (id: number, exercise: TExerciseEntityU) => {
-  const [updated] = await db<ExerciseEntity>(TABLE_NAME)
-    .where({ id })
-    .update({
-      ...exercise,
-    })
-    .returning('*');
+  const updated = await newDb
+    .updateTable(TABLE_NAME)
+    .set({ ...exercise })
+    .where('id', '=', id)
+    .returning([
+      'id',
+      'createdAt',
+      'updatedAt',
+      'name',
+      'description',
+      'shortDescription',
+      sql<User>`(select row_to_json(users) from (select id, created_at, updated_at, name, lastname, email from users u where id = 1) as users)`.as(
+        'creator',
+      ),
+    ])
+    .executeTakeFirst();
 
   return updated;
 };
 
 const deleteOne = async (id: number) => {
-  const [deleted] = await db<ExerciseEntity>(TABLE_NAME).where({ id }).delete().returning('*');
+  const deleted = await newDb.deleteFrom(TABLE_NAME).where('id', '=', id).executeTakeFirst();
 
-  return deleted;
+  return deleted.numDeletedRows;
 };
 
 export const service = { getAll, getOne, create, update, deleteOne };
