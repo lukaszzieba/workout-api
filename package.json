@@ -6,12 +6,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "nodemon -r tsconfig-paths/register --files src/index.ts",
-    "test": "NODE_ENV=test jest --testTimeout=5000",
-    "seed:make": "knex seed:make new_seed --knexfile src/db/knexfile.ts --client pg",
-    "seed:run": "knex seed:run --knexfile src/db/knexfile.ts --client pg",
-    "migration:make": "knex migrate:make new_migration --knexfile src/db/knexfile.ts --client pg",
-    "migration:up": "knex migrate:up --knexfile src/db/knexfile.ts --client pg",
-    "migration:down": "knex migrate:down --knexfile src/db/knexfile.ts --client pg"
+    "test": "NODE_ENV=test jest --testTimeout=5000"
   },
   "author": "",
   "license": "ISC",
@@ -26,9 +21,6 @@
     "express-session": "^1.17.3",
     "ioredis": "^5.2.3",
     "joi": "^17.6.3",
-    "knex": "^2.3.0",
-    "knex-stringcase": "^1.4.6",
-    "knex-tiny-logger": "^2.1.0",
     "kysely": "^0.24.2",
     "pg": "^8.8.0"
   },

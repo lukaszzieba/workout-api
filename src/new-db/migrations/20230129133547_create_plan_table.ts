@@ -9,7 +9,7 @@ export async function up(kysely: Kysely<Database>): Promise<void> {
     .addColumn('updated_at', 'timestamp', (col) => col.defaultTo(sql`now()`))
     .addColumn('name', 'text', (col) => col.notNull())
     .addColumn('description', 'text', (col) => col.notNull())
-    .addColumn('user_id', 'bigint', (col) => col.defaultTo(1).notNull().references('user.id'))
+    .addColumn('user_id', 'bigint', (col) => col.defaultTo(1).notNull().references('users.id'))
     .execute();
 }
 

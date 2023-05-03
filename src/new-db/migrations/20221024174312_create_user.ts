@@ -3,7 +3,7 @@ import { Database } from 'src/new-db';
 
 export async function up(kysely: Kysely<Database>): Promise<void> {
   await kysely.schema
-    .createTable('user')
+    .createTable('users')
     .addColumn('id', 'bigserial', (col) => col.primaryKey())
     .addColumn('created_at', 'timestamp', (col) => col.defaultTo(sql`now()`))
     .addColumn('updated_at', 'timestamp', (col) => col.defaultTo(sql`now()`))
@@ -15,5 +15,5 @@ export async function up(kysely: Kysely<Database>): Promise<void> {
 }
 
 export async function down(kysely: Kysely<Database>): Promise<void> {
-  await kysely.schema.dropTable('user').execute();
+  await kysely.schema.dropTable('users').execute();
 }

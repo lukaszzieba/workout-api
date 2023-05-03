@@ -7,11 +7,11 @@ import { ExerciseEntity } from '@routes/exercise/types';
 import { TrainingEntity } from '@routes/training/types';
 import { UserEntity } from '@routes/user/types';
 import { PlanEntity } from '@routes/plan/types';
+import { seed } from 'src/new-db/seed/init_seed';
 
 interface TrainingExercise {
   trainingId: number;
   exerciseId: number;
-  name: string;
   sets: number;
   reps: number;
   tempo: string | null;
@@ -68,7 +68,8 @@ async function migrateToLatest(db: Kysely<Database>) {
     process.exit(1);
   }
 
-  await db.destroy();
+  // await db.destroy();
 }
 
 migrateToLatest(newDb);
+// seed(newDb);
