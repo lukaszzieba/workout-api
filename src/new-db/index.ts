@@ -4,12 +4,25 @@ import { Pool } from 'pg';
 import { ExerciseEntity } from '@routes/exercise/types';
 import { TrainingEntity } from '@routes/training/types';
 import { UserEntity } from '@routes/user/types';
+import { PlanEntity } from '@routes/plan/types';
+
+interface TrainingExercise {
+  trainingId: number;
+  exerciseId: number;
+  name: string;
+  sets: number;
+  reps: number;
+  tempo: string | null;
+  reserve: string | null;
+  rest: string | null;
+}
 
 interface Database {
   exercise: ExerciseEntity;
   training: TrainingEntity;
   users: UserEntity;
-  trainingExercise: TrainingEntity;
+  trainingExercise: TrainingExercise;
+  plan: PlanEntity;
 }
 
 const { DB_CLIENT, DB_HOST, DB_PORT, DB_NAME } = process.env;

@@ -1,7 +1,7 @@
 import { MyRequest, Service } from '@types';
 import { AppError } from '@utils/error';
 import { StatusCodes } from '@utils/htttp-statuses';
-import { Plan, TPlanI, TPlanU } from './plan-entity';
+import { Plan, TPlanI, TPlanU } from '@routes/plan/types';
 import { TrainingService } from '@routes/training/types';
 
 type PlanService = Service<Plan, TPlanI, TPlanU>;

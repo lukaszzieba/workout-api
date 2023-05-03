@@ -2,86 +2,116 @@ import db from '@db';
 import {
   ExerciseForTraining,
   Training,
-  TrainingEntity,
   TTrainingEntityI,
   TTrainingEntityU,
 } from '@routes/training/types';
 
+import { newDb } from 'src/new-db';
 const TABLE_NAME = 'training';
 
 const trainingMapper = (
-  { id, name, shortDescription, description }: TrainingEntity,
+  { id, name, shortDescription, description, updatedAt, createdAt }: Training,
   exercises?: ExerciseForTraining[],
 ): Training => ({
   id,
   name,
+  updatedAt,
+  createdAt,
   shortDescription,
   description,
   exercises,
 });
 
 const getAll = async () => {
-  const all = await db.select('*').from<TrainingEntity>(TABLE_NAME);
+  const all = await newDb
+    .selectFrom(TABLE_NAME)
+    .select(['id', 'name', 'shortDescription', 'description', 'createdAt', 'updatedAt'])
+    .execute();
 
-  const exercises = await db(TABLE_NAME)
-    .join('training_exercise', 'training.id', '=', 'training_exercise.training_id')
-    .join('exercise', 'exercise.id', '=', 'training_exercise.exercise_id')
-    .whereIn(
-      'training.id',
+  const e = await newDb
+    .selectFrom('trainingExercise')
+    .innerJoin('exercise', 'exercise.id', 'trainingExercise.exerciseId')
+    .where(
+      'trainingId',
+      'in',
       all.map(({ id }) => id),
     )
-    .select<ExerciseForTraining[]>(
+    .select([
       'exercise.id',
       'exercise.name',
-      'exercise.short_description',
+      'exercise.shortDescription',
       'exercise.description',
-      'training_exercise.sets',
-      'training_exercise.reps',
-      'training_exercise.tempo',
-      'training_exercise.rest',
-    );
+      'trainingExercise.sets',
+      'trainingExercise.reps',
+      'trainingExercise.tempo',
+      'trainingExercise.rest',
+    ])
+    .execute();
 
-  return all.map((a) => trainingMapper(a));
+  return all.map((a) => trainingMapper(a, e));
 };
 
 const getOne = async (id: number) => {
-  const [training] = await db.select('*').from<TrainingEntity>(TABLE_NAME).where({ id });
+  const training = await newDb
+    .selectFrom(TABLE_NAME)
+    .where('id', '=', id)
+    .select(['id', 'name', 'shortDescription', 'description', 'createdAt', 'updatedAt'])
+    .executeTakeFirst();
 
-  const exercise = await db(TABLE_NAME)
-    .join('training_exercise', 'training.id', '=', 'training_exercise.training_id')
-    .join('exercise', 'exercise.id', '=', 'training_exercise.exercise_id')
-    .whereIn('training.id', [training.id])
-    .select<ExerciseForTraining[]>(
+  const exercise = await newDb
+    .selectFrom('trainingExercise')
+    .innerJoin('exercise', 'exercise.id', 'trainingExercise.exerciseId')
+    .where('trainingId', '=', id)
+    .select([
       'exercise.id',
       'exercise.name',
-      'exercise.short_description',
+      'exercise.shortDescription',
       'exercise.description',
-      'training_exercise.sets',
-      'training_exercise.reps',
-      'training_exercise.tempo',
-      'training_exercise.rest',
-    );
+      'trainingExercise.sets',
+      'trainingExercise.reps',
+      'trainingExercise.tempo',
+      'trainingExercise.rest',
+    ])
+    .execute();
+
+  if (!training) {
+    return undefined;
+  }
 
   return trainingMapper(training, exercise);
 };
 
 const create = async (training: TTrainingEntityI) => {
-  const [created] = await db<TrainingEntity>(TABLE_NAME)
-    .insert({
-      ...training,
+  const created = await newDb
+    .insertInto(TABLE_NAME)
+    .values({
+      name: training.name,
+      shortDescription: training.shortDescription,
+      description: training.description,
     })
-    .returning('*');
+    .returning(['id', 'name', 'shortDescription', 'description', 'createdAt', 'updatedAt'])
+    .executeTakeFirst();
+
+  if (!created) {
+    return undefined;
+  }
 
   return trainingMapper(created);
 };
 
 const update = async (id: number, training: TTrainingEntityU) => {
-  const [updated] = await db(TABLE_NAME)
-    .where({ id })
-    .update({
+  const updated = await newDb
+    .updateTable(TABLE_NAME)
+    .set({
       ...training,
     })
-    .returning('*');
+    .where('id', '=', id)
+    .returning(['id', 'name', 'shortDescription', 'description', 'createdAt', 'updatedAt'])
+    .executeTakeFirst();
+
+  if (!updated) {
+    return undefined;
+  }
 
   return trainingMapper(updated);
 };
@@ -89,13 +119,39 @@ const update = async (id: number, training: TTrainingEntityU) => {
 const deleteOne = async (id: number) => {
   // TODO
   // should cascade to association table
-  const [deleted] = await db<TrainingEntity>(TABLE_NAME).where({ id }).delete().returning('*');
+  const deleted = await newDb.deleteFrom(TABLE_NAME).where('id', '=', id).executeTakeFirst();
 
-  return trainingMapper(deleted);
+  return deleted.numDeletedRows;
 };
 
 const getByPlanId = async (planId: number) => {
-  return await db.select('*').from<TrainingEntity>(TABLE_NAME).where({ planId });
+  const trainig = await newDb
+    .selectFrom('training')
+    .select(['id', 'name', 'shortDescription', 'description', 'createdAt', 'updatedAt'])
+    .where('planId', '=', planId)
+    .executeTakeFirst();
+
+  if (!trainig) {
+    return undefined;
+  }
+
+  const exercise = await newDb
+    .selectFrom('trainingExercise')
+    .innerJoin('exercise', 'exercise.id', 'trainingExercise.exerciseId')
+    .where('trainingId', '=', trainig.id)
+    .select([
+      'exercise.id',
+      'exercise.name',
+      'exercise.shortDescription',
+      'exercise.description',
+      'trainingExercise.sets',
+      'trainingExercise.reps',
+      'trainingExercise.tempo',
+      'trainingExercise.rest',
+    ])
+    .execute();
+
+  return trainingMapper(trainig, exercise);
 };
 
 export const service = { getAll, getOne, create, update, deleteOne, getByPlanId };

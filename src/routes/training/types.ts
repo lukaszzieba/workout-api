@@ -1,28 +1,36 @@
-import { BaseEntity, Service } from '@types';
+import { Generated } from 'kysely';
+import { Service } from '@types';
 import { Exercise } from '@routes/exercise/types';
 
-export interface TrainingEntity extends BaseEntity {
+export interface TrainingEntity {
+  id: Generated<number>;
+  createdAt: Generated<string>;
+  updatedAt: Generated<string>;
   name: string;
   shortDescription?: string;
   description: string;
-  planId: number;
-  userId: number;
+  planId?: number;
+  userId?: number;
 }
-export type TTrainingEntityI = Pick<
-  TrainingEntity,
-  'name' | 'shortDescription' | 'description' | 'userId'
->;
-export type TTrainingEntityU = Partial<TTrainingEntityI>;
 
-export type TrainingService = Service<Training, TTrainingEntityI, TTrainingEntityU> & {
-  getByPlanId: (planId: number) => Promise<Training[]>;
-};
-
-export type Training = Pick<TrainingEntity, 'id' | 'name' | 'shortDescription' | 'description'> & {
+export type Training = Pick<TrainingEntity, 'name' | 'shortDescription' | 'description'> & {
+  id: number;
+  createdAt: string;
+  updatedAt: string;
   exercises?: ExerciseForTraining[];
 };
 
-export type ExerciseForTraining = Exercise & {
+export type TTrainingEntityI = Pick<Training, 'name' | 'shortDescription' | 'description'>;
+export type TTrainingEntityU = Partial<TTrainingEntityI>;
+
+export type TrainingService = Service<Training, TTrainingEntityI, TTrainingEntityU> & {
+  getByPlanId: (planId: number) => Promise<Training | undefined>;
+};
+
+export type ExerciseForTraining = Pick<
+  Exercise,
+  'id' | 'name' | 'shortDescription' | 'description'
+> & {
   sets: number;
   reps: number;
   tempo: string | null;
