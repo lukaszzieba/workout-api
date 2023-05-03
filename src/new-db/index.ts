@@ -1,4 +1,6 @@
-import { CamelCasePlugin, Kysely, PostgresDialect } from 'kysely';
+import { promises as fs } from 'fs';
+import * as path from 'path';
+import { CamelCasePlugin, FileMigrationProvider, Kysely, Migrator, PostgresDialect } from 'kysely';
 import { Pool } from 'pg';
 
 import { ExerciseEntity } from '@routes/exercise/types';
@@ -17,7 +19,7 @@ interface TrainingExercise {
   rest: string | null;
 }
 
-interface Database {
+export interface Database {
   exercise: ExerciseEntity;
   training: TrainingEntity;
   users: UserEntity;
@@ -39,3 +41,34 @@ export const newDb = new Kysely<Database>({
   log: ['query'],
   plugins: [new CamelCasePlugin()],
 });
+
+async function migrateToLatest(db: Kysely<Database>) {
+  const migrator = new Migrator({
+    db,
+    provider: new FileMigrationProvider({
+      fs,
+      path,
+      migrationFolder: path.join(__dirname, 'migrations'),
+    }),
+  });
+
+  const { error, results } = await migrator.migrateToLatest();
+
+  results?.forEach((it) => {
+    if (it.status === 'Success') {
+      console.log(`migration "${it.migrationName}" was executed successfully`);
+    } else if (it.status === 'Error') {
+      console.error(`failed to execute migration "${it.migrationName}"`);
+    }
+  });
+
+  if (error) {
+    console.error('failed to migrate');
+    console.error(error);
+    process.exit(1);
+  }
+
+  await db.destroy();
+}
+
+migrateToLatest(newDb);
