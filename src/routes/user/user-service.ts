@@ -43,13 +43,21 @@ export const update = async (id: number, user: TUserEntityU) => {
 const deleteOne = async (id: number) => {
   const deleted = await newDb.deleteFrom(TABLE_NAME).where('id', '=', id).executeTakeFirst();
 
-  return deleted.numDeletedRows;
+  if (deleted.numDeletedRows === 0n) {
+    return false;
+  }
+
+  return true;
 };
 
 const getOneByEmail = async (email: string) => {
   const deleted = await newDb.deleteFrom(TABLE_NAME).where('email', '=', email).executeTakeFirst();
 
-  return deleted.numDeletedRows;
+  if (deleted.numDeletedRows === 0n) {
+    return false;
+  }
+
+  return true;
 };
 
 export const service = { getAll, getOne, create, update, deleteOne, getOneByEmail };

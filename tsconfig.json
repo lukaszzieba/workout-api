@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2017",
+    "target": "es2020",
     "module": "commonjs",
     "typeRoots": ["./node_modules/@types"],
     "lib": ["dom", "es6", "es2017", "esnext.asynciterable"],

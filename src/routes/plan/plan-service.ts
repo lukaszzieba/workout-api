@@ -46,7 +46,11 @@ export const update = async (id: number, plan: TPlanU) => {
 const deleteOne = async (id: number) => {
   const deleted = await newDb.deleteFrom(TABLE_NAME).where('id', '=', id).executeTakeFirst();
 
-  return deleted.numDeletedRows;
+  if (deleted.numDeletedRows === 0n) {
+    return false;
+  }
+
+  return true;
 };
 
 export const service = { getAll, getOne, create, update, deleteOne };

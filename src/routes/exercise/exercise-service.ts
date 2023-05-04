@@ -45,6 +45,7 @@ const getOne = async (id: number) => {
 };
 
 const create = async (exercise: TExerciseEntityI) => {
+  // TODO: get userId from req session
   return await newDb
     .insertInto(TABLE_NAME)
     .values({
@@ -89,7 +90,11 @@ export const update = async (id: number, exercise: TExerciseEntityU) => {
 const deleteOne = async (id: number) => {
   const deleted = await newDb.deleteFrom(TABLE_NAME).where('id', '=', id).executeTakeFirst();
 
-  return deleted.numDeletedRows;
+  if (deleted.numDeletedRows === 0n) {
+    return false;
+  }
+
+  return true;
 };
 
 export const service = { getAll, getOne, create, update, deleteOne };

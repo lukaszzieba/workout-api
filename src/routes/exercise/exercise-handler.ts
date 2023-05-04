@@ -45,11 +45,11 @@ export const updateOneExerciseHandler =
 export const deleteOneExerciseHandler =
   (exerciseService: ExerciseService) =>
   async ({ params: { id } }: MyRequest<never, { id: number }>) => {
-    const exercise = await exerciseService.deleteOne(id);
+    const deleted = await exerciseService.deleteOne(id);
 
-    if (!exercise) {
+    if (!deleted) {
       throw new AppError(StatusCodes.NOT_FOUND, 'NOT FOUND');
     }
 
-    return exercise;
+    return deleted;
   };

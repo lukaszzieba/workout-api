@@ -120,7 +120,11 @@ const deleteOne = async (id: number) => {
   // should cascade to association table
   const deleted = await newDb.deleteFrom(TABLE_NAME).where('id', '=', id).executeTakeFirst();
 
-  return deleted.numDeletedRows;
+  if (deleted.numDeletedRows === 0n) {
+    return false;
+  }
+
+  return true;
 };
 
 const getByPlanId = async (planId: number) => {

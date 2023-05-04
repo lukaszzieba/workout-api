@@ -52,13 +52,13 @@ export const updateOneUserHandler =
 export const deleteOneUserHandler =
   (userService: UserService) =>
   async ({ params: { id } }: MyRequest<never, { id: number }>) => {
-    const user = await userService.deleteOne(id);
+    const deleted = await userService.deleteOne(id);
 
-    if (!user) {
+    if (!deleted) {
       throw new AppError(StatusCodes.NOT_FOUND, 'NOT FOUND');
     }
 
-    return userMapper(user);
+    return deleted;
   };
 
 export const createUserHandler =
