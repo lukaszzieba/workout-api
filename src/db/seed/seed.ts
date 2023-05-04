@@ -1,5 +1,5 @@
 import { Kysely, sql } from 'kysely';
-import { Database } from 'src/new-db';
+import { Database } from '@db';
 
 export async function seed(kysely: Kysely<Database>): Promise<void> {
   // Deletes ALL existing entries

@@ -7,7 +7,7 @@ import { ExerciseEntity } from '@routes/exercise/types';
 import { TrainingEntity } from '@routes/training/types';
 import { UserEntity } from '@routes/user/types';
 import { PlanEntity } from '@routes/plan/types';
-import { seed } from 'src/new-db/seed/init_seed';
+import { seed } from '@db/seed/seed';
 
 interface TrainingExercise {
   trainingId: number;
@@ -30,7 +30,7 @@ export interface Database {
 const { DB_CLIENT, DB_HOST, DB_PORT, DB_NAME } = process.env;
 
 // You'd create one of these when you start your app.
-export const newDb = new Kysely<Database>({
+export const db = new Kysely<Database>({
   // Use MysqlDialect for MySQL and SqliteDialect for SQLite.
   dialect: new PostgresDialect({
     pool: new Pool({
@@ -71,5 +71,5 @@ async function migrateToLatest(db: Kysely<Database>) {
   // await db.destroy();
 }
 
-migrateToLatest(newDb);
-// seed(newDb);
+migrateToLatest(db);
+// seed(db);

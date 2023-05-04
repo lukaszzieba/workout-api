@@ -1,12 +1,12 @@
 import { sql } from 'kysely';
-import { newDb } from '../../new-db/index';
+import { db } from '@db';
 import { User } from '@routes/user/types';
 import { TExerciseEntityI, TExerciseEntityU } from '@routes/exercise/types';
 
 const TABLE_NAME = 'exercise';
 
 const getAll = async () => {
-  const a = await newDb
+  const a = await db
     .selectFrom(TABLE_NAME)
     .innerJoin('users', 'users.id', 'exercise.userId')
     .select([
@@ -26,7 +26,7 @@ const getAll = async () => {
 };
 
 const getOne = async (id: number) => {
-  return await newDb
+  return await db
     .selectFrom(TABLE_NAME)
     .innerJoin('users', 'users.id', 'exercise.userId')
     .select([
@@ -46,7 +46,7 @@ const getOne = async (id: number) => {
 
 const create = async (exercise: TExerciseEntityI) => {
   // TODO: get userId from req session
-  return await newDb
+  return await db
     .insertInto(TABLE_NAME)
     .values({
       name: exercise.name,
@@ -69,7 +69,7 @@ const create = async (exercise: TExerciseEntityI) => {
 };
 
 export const update = async (id: number, exercise: TExerciseEntityU) => {
-  return await newDb
+  return await db
     .updateTable(TABLE_NAME)
     .set({ ...exercise })
     .where('id', '=', id)
@@ -88,7 +88,7 @@ export const update = async (id: number, exercise: TExerciseEntityU) => {
 };
 
 const deleteOne = async (id: number) => {
-  const deleted = await newDb.deleteFrom(TABLE_NAME).where('id', '=', id).executeTakeFirst();
+  const deleted = await db.deleteFrom(TABLE_NAME).where('id', '=', id).executeTakeFirst();
 
   if (deleted.numDeletedRows === 0n) {
     return false;

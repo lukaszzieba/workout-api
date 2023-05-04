@@ -1,10 +1,10 @@
 import { Kysely } from 'kysely';
-import { Database } from 'src/new-db';
+import { Database } from '@db';
 
 export async function up(kysely: Kysely<Database>): Promise<void> {
   await kysely.schema
     .alterTable('exercise')
-    .addColumn('user_id', 'bigint', (col) => col.defaultTo(2).notNull().references('users.id'))
+    .addColumn('user_id', 'integer', (col) => col.defaultTo(2).notNull().references('users.id'))
     .execute();
 }
 

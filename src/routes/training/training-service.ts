@@ -1,3 +1,4 @@
+import { db } from '@db';
 import {
   ExerciseForTraining,
   Training,
@@ -5,7 +6,6 @@ import {
   TTrainingEntityU,
 } from '@routes/training/types';
 
-import { newDb } from 'src/new-db';
 const TABLE_NAME = 'training';
 
 const trainingMapper = (
@@ -22,12 +22,12 @@ const trainingMapper = (
 });
 
 const getAll = async () => {
-  const all = await newDb
+  const all = await db
     .selectFrom(TABLE_NAME)
     .select(['id', 'name', 'shortDescription', 'description', 'createdAt', 'updatedAt'])
     .execute();
 
-  const e = await newDb
+  const e = await db
     .selectFrom('trainingExercise')
     .innerJoin('exercise', 'exercise.id', 'trainingExercise.exerciseId')
     .where(
@@ -51,13 +51,13 @@ const getAll = async () => {
 };
 
 const getOne = async (id: number) => {
-  const training = await newDb
+  const training = await db
     .selectFrom(TABLE_NAME)
     .where('id', '=', id)
     .select(['id', 'name', 'shortDescription', 'description', 'createdAt', 'updatedAt'])
     .executeTakeFirst();
 
-  const exercise = await newDb
+  const exercise = await db
     .selectFrom('trainingExercise')
     .innerJoin('exercise', 'exercise.id', 'trainingExercise.exerciseId')
     .where('trainingId', '=', id)
@@ -81,7 +81,7 @@ const getOne = async (id: number) => {
 };
 
 const create = async (training: TTrainingEntityI) => {
-  const created = await newDb
+  const created = await db
     .insertInto(TABLE_NAME)
     .values({
       name: training.name,
@@ -99,7 +99,7 @@ const create = async (training: TTrainingEntityI) => {
 };
 
 const update = async (id: number, training: TTrainingEntityU) => {
-  const updated = await newDb
+  const updated = await db
     .updateTable(TABLE_NAME)
     .set({
       ...training,
@@ -118,7 +118,7 @@ const update = async (id: number, training: TTrainingEntityU) => {
 const deleteOne = async (id: number) => {
   // TODO
   // should cascade to association table
-  const deleted = await newDb.deleteFrom(TABLE_NAME).where('id', '=', id).executeTakeFirst();
+  const deleted = await db.deleteFrom(TABLE_NAME).where('id', '=', id).executeTakeFirst();
 
   if (deleted.numDeletedRows === 0n) {
     return false;
@@ -128,7 +128,7 @@ const deleteOne = async (id: number) => {
 };
 
 const getByPlanId = async (planId: number) => {
-  const trainig = await newDb
+  const trainig = await db
     .selectFrom('training')
     .select(['id', 'name', 'shortDescription', 'description', 'createdAt', 'updatedAt'])
     .where('planId', '=', planId)
@@ -138,7 +138,7 @@ const getByPlanId = async (planId: number) => {
     return undefined;
   }
 
-  const exercise = await newDb
+  const exercise = await db
     .selectFrom('trainingExercise')
     .innerJoin('exercise', 'exercise.id', 'trainingExercise.exerciseId')
     .where('trainingId', '=', trainig.id)

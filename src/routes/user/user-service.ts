@@ -1,17 +1,17 @@
-import { newDb } from '../../new-db/index';
+import { db } from '@db';
 import { TUserEntityI, TUserEntityU } from '@routes/user/types';
 
 const TABLE_NAME = 'users';
 
 const getAll = async () => {
-  return newDb
+  return db
     .selectFrom(TABLE_NAME)
     .select(['id', 'name', 'lastname', 'email', 'password'])
     .execute();
 };
 
 const getOne = async (id: number) => {
-  return newDb
+  return db
     .selectFrom(TABLE_NAME)
     .select(['id', 'name', 'lastname', 'email', 'password'])
     .where('id', '=', id)
@@ -19,7 +19,7 @@ const getOne = async (id: number) => {
 };
 
 const create = async (user: TUserEntityI) => {
-  return await newDb
+  return await db
     .insertInto(TABLE_NAME)
     .values({
       name: user.name,
@@ -32,7 +32,7 @@ const create = async (user: TUserEntityI) => {
 };
 
 export const update = async (id: number, user: TUserEntityU) => {
-  return await newDb
+  return await db
     .updateTable(TABLE_NAME)
     .set({ ...user })
     .where('id', '=', id)
@@ -41,7 +41,7 @@ export const update = async (id: number, user: TUserEntityU) => {
 };
 
 const deleteOne = async (id: number) => {
-  const deleted = await newDb.deleteFrom(TABLE_NAME).where('id', '=', id).executeTakeFirst();
+  const deleted = await db.deleteFrom(TABLE_NAME).where('id', '=', id).executeTakeFirst();
 
   if (deleted.numDeletedRows === 0n) {
     return false;
@@ -51,7 +51,7 @@ const deleteOne = async (id: number) => {
 };
 
 const getOneByEmail = async (email: string) => {
-  const deleted = await newDb.deleteFrom(TABLE_NAME).where('email', '=', email).executeTakeFirst();
+  const deleted = await db.deleteFrom(TABLE_NAME).where('email', '=', email).executeTakeFirst();
 
   if (deleted.numDeletedRows === 0n) {
     return false;

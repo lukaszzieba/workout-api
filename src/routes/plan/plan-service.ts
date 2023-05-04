@@ -1,10 +1,10 @@
-import { newDb } from 'src/new-db';
+import { db } from '@db';
 import { TPlanI, TPlanU } from '@routes/plan/types';
 
 const TABLE_NAME = 'plan';
 
 const getAll = async () => {
-  const all = await newDb
+  const all = await db
     .selectFrom(TABLE_NAME)
     .select(['id', 'name', 'description', 'createdAt', 'updatedAt'])
     .execute();
@@ -13,7 +13,7 @@ const getAll = async () => {
 };
 
 const getOne = async (id: number) => {
-  const one = await newDb
+  const one = await db
     .selectFrom(TABLE_NAME)
     .where('id', '=', id)
     .select(['id', 'name', 'description', 'createdAt', 'updatedAt'])
@@ -23,7 +23,7 @@ const getOne = async (id: number) => {
 };
 
 const create = async (plan: TPlanI) => {
-  const created = await newDb
+  const created = await db
     .insertInto(TABLE_NAME)
     .values({ ...plan })
     .returning(['id', 'name', 'description', 'createdAt', 'updatedAt'])
@@ -33,7 +33,7 @@ const create = async (plan: TPlanI) => {
 };
 
 export const update = async (id: number, plan: TPlanU) => {
-  const updated = await newDb
+  const updated = await db
     .updateTable(TABLE_NAME)
     .set({ ...plan })
     .where('id', '=', id)
@@ -44,7 +44,7 @@ export const update = async (id: number, plan: TPlanU) => {
 };
 
 const deleteOne = async (id: number) => {
-  const deleted = await newDb.deleteFrom(TABLE_NAME).where('id', '=', id).executeTakeFirst();
+  const deleted = await db.deleteFrom(TABLE_NAME).where('id', '=', id).executeTakeFirst();
 
   if (deleted.numDeletedRows === 0n) {
     return false;
