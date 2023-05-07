@@ -3,34 +3,13 @@ import * as path from 'path';
 import { CamelCasePlugin, FileMigrationProvider, Kysely, Migrator, PostgresDialect } from 'kysely';
 import { Pool } from 'pg';
 
-import { ExerciseEntity } from '@routes/exercise/types';
-import { TrainingEntity } from '@routes/training/types';
-import { UserEntity } from '@routes/user/types';
-import { PlanEntity } from '@routes/plan/types';
+import { DB } from '@db/types/generated';
 import { seed } from '@db/seed/seed';
-
-interface TrainingExercise {
-  trainingId: number;
-  exerciseId: number;
-  sets: number;
-  reps: number;
-  tempo: string | null;
-  reserve: string | null;
-  rest: string | null;
-}
-
-export interface Database {
-  exercise: ExerciseEntity;
-  training: TrainingEntity;
-  users: UserEntity;
-  trainingExercise: TrainingExercise;
-  plan: PlanEntity;
-}
 
 const { DB_CLIENT, DB_HOST, DB_PORT, DB_NAME } = process.env;
 
 // You'd create one of these when you start your app.
-export const db = new Kysely<Database>({
+export const db = new Kysely<DB>({
   // Use MysqlDialect for MySQL and SqliteDialect for SQLite.
   dialect: new PostgresDialect({
     pool: new Pool({
@@ -42,7 +21,7 @@ export const db = new Kysely<Database>({
   plugins: [new CamelCasePlugin()],
 });
 
-async function migrateToLatest(db: Kysely<Database>) {
+async function migrateToLatest(db: Kysely<DB>) {
   const migrator = new Migrator({
     db,
     provider: new FileMigrationProvider({
@@ -71,5 +50,5 @@ async function migrateToLatest(db: Kysely<Database>) {
   // await db.destroy();
 }
 
-migrateToLatest(db);
+// migrateToLatest(db);
 // seed(db);

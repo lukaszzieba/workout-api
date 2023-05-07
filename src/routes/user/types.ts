@@ -1,15 +1,5 @@
-import { Generated } from 'kysely';
 import { Service } from '@types';
-
-export type UserEntity = {
-  id: Generated<number>;
-  createdAt: Generated<string>;
-  updatedAt: Generated<string>;
-  name: string;
-  lastname: string;
-  email: string;
-  password: string;
-};
+import { User as UserEntity } from '@db/types/generated';
 
 export type User = Pick<UserEntity, 'name' | 'lastname' | 'email' | 'password'> & {
   id: number;

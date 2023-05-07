@@ -1,22 +1,11 @@
-import { Generated } from 'kysely';
 import { Service } from '@types';
+import { Training as TrainingEntity } from '@db/types/generated';
 import { Exercise } from '@routes/exercise/types';
-
-export interface TrainingEntity {
-  id: Generated<number>;
-  createdAt: Generated<string>;
-  updatedAt: Generated<string>;
-  name: string;
-  shortDescription?: string;
-  description: string;
-  planId?: number;
-  userId?: number;
-}
 
 export type Training = Pick<TrainingEntity, 'name' | 'shortDescription' | 'description'> & {
   id: number;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
   exercises?: ExerciseForTraining[];
 };
 

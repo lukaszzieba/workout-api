@@ -1,7 +1,7 @@
 import { MyRequest, HashUtil } from '@types';
 import AppError from '@utils/error/error';
 import { StatusCodes } from '@utils/htttp-statuses';
-import { TUserEntityU, UserService, User, LoginBody, UserEntity } from '@routes/user/types';
+import { TUserEntityU, UserService, User, LoginBody } from '@routes/user/types';
 
 const userMapper = ({
   id,

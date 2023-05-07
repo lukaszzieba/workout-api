@@ -131,7 +131,6 @@ const getByPlanId = async (planId: number) => {
   const trainig = await db
     .selectFrom('training')
     .select(['id', 'name', 'shortDescription', 'description', 'createdAt', 'updatedAt'])
-    .where('planId', '=', planId)
     .executeTakeFirst();
 
   if (!trainig) {
