@@ -1,6 +1,4 @@
 import express from 'express';
-import { idParamValidator } from '@utils/validators';
-import { bodyValidation, paramsValidation } from '@utils/validators';
 import { createExpressCallback } from '@utils/express-callback';
 import * as creators from '@routes/training/training-handler';
 import {
@@ -8,6 +6,8 @@ import {
   trainingUpdateValidator,
 } from '@routes/training/training-validator';
 import { service } from '@routes/training/training-service';
+import { bodyValidationZ, paramsValidationZ } from '@utils/validators/validation-middleware';
+import { idParamValidatorZ } from '@utils/validators/param-id-validator';
 
 const router = express.Router();
 
@@ -20,23 +20,23 @@ const deleteTrainingHandler = creators.deleteOneTrainingHandler(service);
 router.get('/', createExpressCallback(getAllTrainingHandler));
 router.get(
   '/:id',
-  paramsValidation(idParamValidator),
+  paramsValidationZ(idParamValidatorZ),
   createExpressCallback(getOneTrainingHandler),
 );
 router.post(
   '/',
-  bodyValidation(trainingCrateValidator),
+  bodyValidationZ(trainingCrateValidator),
   createExpressCallback(createTrainingHandler),
 );
 router.patch(
   '/:id',
-  paramsValidation(idParamValidator),
-  bodyValidation(trainingUpdateValidator),
+  paramsValidationZ(idParamValidatorZ),
+  bodyValidationZ(trainingUpdateValidator),
   createExpressCallback(updateTrainingHandler),
 );
 router.delete(
   '/:id',
-  paramsValidation(idParamValidator),
+  paramsValidationZ(idParamValidatorZ),
   createExpressCallback(deleteTrainingHandler),
 );
 

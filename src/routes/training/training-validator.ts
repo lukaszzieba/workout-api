@@ -1,14 +1,13 @@
-import Joi from 'Joi';
-import { TTrainingEntityI, TTrainingEntityU } from '@routes/training/types';
+import { z } from 'zod';
 
-export const trainingCrateValidator = Joi.object<TTrainingEntityI>({
-  name: Joi.string().required(),
-  shortDescription: Joi.string().required(),
-  description: Joi.string().required(),
+export const trainingCrateValidator = z.object({
+  name: z.string().nonempty(),
+  shortDescription: z.string(),
+  description: z.string(),
 });
 
-export const trainingUpdateValidator = Joi.object<TTrainingEntityU>({
-  name: Joi.string().optional(),
-  shortDescription: Joi.string().optional(),
-  description: Joi.string().optional(),
+export const trainingUpdateValidator = z.object({
+  name: z.string().nonempty().optional(),
+  shortDescription: z.string().nonempty().optional(),
+  description: z.string().nonempty().optional(),
 });

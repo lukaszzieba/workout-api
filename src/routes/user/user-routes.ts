@@ -2,12 +2,12 @@ import express from 'express';
 import argon2 from 'argon2';
 
 import { createExpressCallback } from '@utils/express-callback';
-import { bodyValidation, paramsValidation } from '@utils/validators';
 
 import * as creators from './user-hadler';
 import { service } from './user-service';
 import { userCrateValidator, userUpdateValidator } from './user-validator';
-import { idParamValidator } from '@utils/validators';
+import { idParamValidatorZ } from '@utils/validators/param-id-validator';
+import { bodyValidationZ, paramsValidationZ } from '@utils/validators/validation-middleware';
 
 const router = express.Router();
 
@@ -19,15 +19,19 @@ const deleteUserHandler = creators.deleteOneUserHandler(service);
 const loginUserHandler = creators.loginHandler(service, argon2);
 
 router.get('/', createExpressCallback(getAllUserHandler));
-router.get('/:id', paramsValidation(idParamValidator), createExpressCallback(getOneUserHandler));
-router.post('/', bodyValidation(userCrateValidator), createExpressCallback(createUserHandler));
+router.get('/:id', paramsValidationZ(idParamValidatorZ), createExpressCallback(getOneUserHandler));
+router.post('/', bodyValidationZ(userCrateValidator), createExpressCallback(createUserHandler));
 router.patch(
   '/:id',
-  paramsValidation(idParamValidator),
-  bodyValidation(userUpdateValidator),
+  paramsValidationZ(idParamValidatorZ),
+  bodyValidationZ(userUpdateValidator),
   createExpressCallback(updateUserHandler),
 );
-router.delete('/:id', paramsValidation(idParamValidator), createExpressCallback(deleteUserHandler));
+router.delete(
+  '/:id',
+  paramsValidationZ(idParamValidatorZ),
+  createExpressCallback(deleteUserHandler),
+);
 router.post('/login', createExpressCallback(loginUserHandler));
 
 export default router;
