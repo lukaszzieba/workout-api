@@ -4,7 +4,7 @@ import { StatusCodes } from '@utils/htttp-statuses';
 
 // TODO
 // it can be one validator
-export const paramsValidationZ =
+export const paramsValidation =
   (schema: Zod.Schema) => (req: Request, res: Response, next: NextFunction) => {
     try {
       console.log(req.params);
@@ -16,7 +16,7 @@ export const paramsValidationZ =
     }
   };
 
-export const bodyValidationZ =
+export const bodyValidation =
   (schema: Zod.Schema) => (req: Request, res: Response, next: NextFunction) => {
     try {
       schema.parse(req.body);

@@ -6,8 +6,8 @@ import {
   exerciseUpdateValidator,
 } from '@routes/exercise/exercise-validator';
 import { service } from '@routes/exercise/exercise-service';
-import { bodyValidationZ, paramsValidationZ } from '@utils/validators/validation-middleware';
-import { idParamValidatorZ } from '@utils/validators/param-id-validator';
+import { bodyValidation, paramsValidation } from '@utils/validators/validation-middleware';
+import { idParamValidator } from '@utils/validators/param-id-validator';
 
 const router = express.Router();
 
@@ -20,23 +20,23 @@ const deleteExerciseHandler = creators.deleteOneExerciseHandler(service);
 router.get('/', createExpressCallback(getAllExerciseHandler));
 router.get(
   '/:id',
-  paramsValidationZ(idParamValidatorZ),
+  paramsValidation(idParamValidator),
   createExpressCallback(getOneExerciseHandler),
 );
 router.post(
   '/',
-  bodyValidationZ(exerciseCrateValidator),
+  bodyValidation(exerciseCrateValidator),
   createExpressCallback(createExerciseHandler),
 );
 router.patch(
   '/:id',
-  paramsValidationZ(idParamValidatorZ),
-  bodyValidationZ(exerciseUpdateValidator),
+  paramsValidation(idParamValidator),
+  bodyValidation(exerciseUpdateValidator),
   createExpressCallback(updateExerciseHandler),
 );
 router.delete(
   '/:id',
-  paramsValidationZ(idParamValidatorZ),
+  paramsValidation(idParamValidator),
   createExpressCallback(deleteExerciseHandler),
 );
 
