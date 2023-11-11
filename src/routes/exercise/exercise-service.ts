@@ -3,6 +3,8 @@ import { db } from '@db';
 import { User } from '@routes/user/types';
 import { TExerciseEntityI, TExerciseEntityU } from '@routes/exercise/types';
 
+import { jsonArrayFrom, jsonObjectFrom } from 'kysely/helpers/postgres';
+
 const TABLE_NAME = 'exercise';
 
 const getAll = async () => {
@@ -29,16 +31,22 @@ const getOne = async (id: number) => {
   return await db
     .selectFrom(TABLE_NAME)
     .innerJoin('users', 'users.id', 'exercise.userId')
-    .select([
+    .select((eb) => [
       'exercise.id',
       'exercise.createdAt',
       'exercise.updatedAt',
       'exercise.name',
       'exercise.description',
       'exercise.shortDescription',
-      sql<User>`jsonb_build_object('id', users.id, 'name', users.name, 'lastname', users.lastname, 'email', users.email )`.as(
-        'creator',
-      ),
+      // sql<User>`jsonb_build_object('id', users.id, 'name', users.name, 'lastname', users.lastname, 'email', users.email )`.as(
+      //   'creator',
+      // ),
+      jsonObjectFrom(
+        eb
+          .selectFrom('users')
+          .select(['users.id', 'users.name', 'users.lastname', 'users.email'])
+          .whereRef('exercise.userId', '=', 'users.id'),
+      ).as('creator'),
     ])
     .where('exercise.id', '=', id)
     .executeTakeFirst();

@@ -1,7 +1,7 @@
 import { Service } from '@types';
-import { User as UserEntity } from '@db/types/generated';
+import { Users as UserEntity } from '@db/types/generated';
 
-export type User = Pick<UserEntity, 'name' | 'lastname' | 'email' | 'password'> & {
+export type User = Pick<UserEntity, 'name' | 'lastname' | 'email'> & {
   id: number;
 };
 export type TUserEntityI = Pick<UserEntity, 'name' | 'lastname' | 'email' | 'password'>;

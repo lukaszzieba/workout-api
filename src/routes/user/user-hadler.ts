@@ -81,7 +81,9 @@ export const loginHandler =
   (userService: UserService, hashUtil: HashUtil) => async (req: MyRequest<LoginBody>) => {
     const { email, password } = req.body;
 
-    const user = await userService?.getOneByEmail?.(email);
+    // TODO
+    // fix user model, email is required
+    const user = await userService?.getOneByEmail?.(email!);
 
     if (!user) {
       throw new AppError(StatusCodes.NOT_FOUND, 'NOT FOUND');

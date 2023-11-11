@@ -23,7 +23,8 @@
     "ioredis": "^5.2.3",
     "joi": "^17.6.3",
     "kysely": "^0.24.2",
-    "pg": "^8.8.0"
+    "pg": "^8.8.0",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@types/compression": "^1.7.2",

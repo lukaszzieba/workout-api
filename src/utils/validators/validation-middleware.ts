@@ -31,3 +31,27 @@ export const paramsValidation =
 
     return next();
   };
+
+// TODO
+// it can be one validator
+export const paramsValidationZ =
+  (schema: Zod.Schema) => (req: Request, res: Response, next: NextFunction) => {
+    try {
+      console.log(req.params);
+      schema.parse(req.params);
+      return next();
+    } catch (error) {
+      console.log(error);
+      return next(new AppError(StatusCodes.BAD_REQUEST, 'Wrong id param'));
+    }
+  };
+
+export const bodyValidationZ =
+  (schema: Zod.Schema) => (req: Request, res: Response, next: NextFunction) => {
+    try {
+      schema.parse(req.body);
+      return next();
+    } catch (error) {
+      return next(new AppError(StatusCodes.BAD_REQUEST, 'Wrong eq body'));
+    }
+  };
