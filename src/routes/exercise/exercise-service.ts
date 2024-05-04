@@ -1,9 +1,6 @@
-import { sql } from 'kysely';
+import { jsonObjectFrom } from 'kysely/helpers/postgres';
 import { db } from '@db';
-import { User } from '@routes/user/types';
 import { TExerciseEntityI, TExerciseEntityU } from '@routes/exercise/types';
-
-import { jsonArrayFrom, jsonObjectFrom } from 'kysely/helpers/postgres';
 
 const TABLE_NAME = 'exercise';
 
@@ -11,16 +8,25 @@ const getAll = async () => {
   const a = await db
     .selectFrom(TABLE_NAME)
     .innerJoin('users', 'users.id', 'exercise.userId')
-    .select([
+    .select((eb) => [
       'exercise.id',
       'exercise.createdAt',
       'exercise.updatedAt',
       'exercise.name',
       'exercise.description',
       'exercise.shortDescription',
-      sql<User>`jsonb_build_object('id', users.id, 'name', users.name, 'lastname', users.lastname, 'email', users.email )`.as(
-        'creator',
-      ),
+      // sql<User>`(select row_to_json(users) from (select id, created_at, updated_at, name, lastname, email from users u where id = 1) as users)`.as(
+      //   'creator',
+      // ),
+      // sql<User>`jsonb_build_object('id', users.id, 'name', users.name, 'lastname', users.lastname, 'email', users.email )`.as(
+      //   'creator',
+      // ),
+      jsonObjectFrom(
+        eb
+          .selectFrom('users')
+          .select(['users.id', 'users.name', 'users.lastname', 'users.email'])
+          .whereRef('exercise.userId', '=', 'users.id'),
+      ).as('creator'),
     ])
     .execute();
 
@@ -38,9 +44,6 @@ const getOne = async (id: number) => {
       'exercise.name',
       'exercise.description',
       'exercise.shortDescription',
-      // sql<User>`jsonb_build_object('id', users.id, 'name', users.name, 'lastname', users.lastname, 'email', users.email )`.as(
-      //   'creator',
-      // ),
       jsonObjectFrom(
         eb
           .selectFrom('users')
@@ -62,16 +65,19 @@ const create = async (exercise: TExerciseEntityI) => {
       shortDescription: exercise.shortDescription,
       userId: 1,
     })
-    .returning([
+    .returning((eb) => [
       'id',
       'createdAt',
       'updatedAt',
       'name',
       'description',
       'shortDescription',
-      sql<User>`(select row_to_json(users) from (select id, created_at, updated_at, name, lastname, email from users u where id = 1) as users)`.as(
-        'creator',
-      ),
+      jsonObjectFrom(
+        eb
+          .selectFrom('users')
+          .select(['users.id', 'users.name', 'users.lastname', 'users.email'])
+          .whereRef('exercise.userId', '=', 'users.id'),
+      ).as('creator'),
     ])
     .executeTakeFirst();
 };
@@ -81,16 +87,19 @@ export const update = async (id: number, exercise: TExerciseEntityU) => {
     .updateTable(TABLE_NAME)
     .set({ ...exercise })
     .where('id', '=', id)
-    .returning([
+    .returning((eb) => [
       'id',
       'createdAt',
       'updatedAt',
       'name',
       'description',
       'shortDescription',
-      sql<User>`(select row_to_json(users) from (select id, created_at, updated_at, name, lastname, email from users u where id = 1) as users)`.as(
-        'creator',
-      ),
+      jsonObjectFrom(
+        eb
+          .selectFrom('users')
+          .select(['users.id', 'users.name', 'users.lastname', 'users.email'])
+          .whereRef('exercise.userId', '=', 'users.id'),
+      ).as('creator'),
     ])
     .executeTakeFirst();
 };
